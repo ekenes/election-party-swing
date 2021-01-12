@@ -6,3 +6,121 @@ body,
   height: 100%;
   width: 100%;
 }
+#left-label{
+  float: left;
+}
+#right-label{
+  float: right;
+}
+#legend-container{
+  padding: 10px;
+  position: absolute;
+  left: 10px;
+  bottom: 35px;
+}
+#legend{
+  background-color: rgba(0,0,0,0);
+}
+#title {
+  font-size: 18pt;
+  font-weight: 400;
+}
+#infoDiv{
+  padding: 10px;
+  height: 150px;
+}
+#subtitle {
+  padding: 10px 0 10px 0;
+}
+#slider {
+  height: 0;
+  width: 280px;
+  margin: 10px;
+}
+#parties{
+  display: flex;
+  justify-content: center;
+}
+.rep-active {
+  background-color: rgba(220, 75, 0, 1);
+  color: white;
+  border-width: 0;
+  border-style: solid;
+  padding: 5px;
+  width: 80px;
+  cursor: pointer;
+}
+
+.rep-inactive {
+  background-color: white;
+  color: rgba(220, 75, 0, 1);
+  border-width: 1;
+  border-style: solid;
+  border-color: rgba(220, 75, 0, 1);
+  padding: 5px;
+  width: 80px;
+  cursor: pointer;
+}
+
+.dem-active {
+  background-color: rgba(60, 108, 204,1);
+  color: white;
+  border-width: 0;
+  border-style: solid;
+  padding: 5px;
+  width: 80px;
+  cursor: pointer;
+}
+
+.dem-inactive {
+  background-color: white;
+  color: rgba(60, 108, 204,1);
+  border-color: rgba(60, 108, 204,1);
+  border-width: 1;
+  border-style: solid;
+  padding: 5px;
+  width: 80px;
+  cursor: pointer;
+}
+
+.oth-active {
+  background-color: rgba(181, 166, 0, 1);
+  color: white;
+  border-width: 0;
+  border-style: solid;
+  padding: 5px;
+  width: 70px;
+  cursor: pointer;
+}
+
+.oth-inactive {
+  background-color: white;
+  color: rgba(181, 166, 0, 1);
+  border-color: rgba(181, 166, 0, 1);
+  border-width: 1;
+  border-style: solid;
+  padding: 5px;
+  width: 70px;
+  cursor: pointer;
+}
+
+.all-active {
+  background-color: rgb(68, 68, 68);
+  color: white;
+  border-width: 0;
+  border-style: solid;
+  padding: 5px;
+  width: 60px;
+  cursor: pointer;
+}
+
+.all-inactive {
+  background-color: white;
+  color: rgb(68, 68, 68);
+  border-color: rgb(68, 68, 68);
+  border-width: 1;
+  border-style: solid;
+  padding: 5px;
+  width: 60px;
+  cursor: pointer;
+}
