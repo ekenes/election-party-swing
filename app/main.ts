@@ -99,11 +99,13 @@ import { createLegend } from "./legendUtils";
       const labels = colorVariable.stops
         .filter( stop => stop.label )
         .map( stop => stop.label);
+      const title = colorVariable.valueExpressionTitle || colorVariable.legendOptions && colorVariable.legendOptions.title;
 
       createLegend({
         colors,
         gradient: true,
-        labels
+        labels,
+        title
       });
     }
 
@@ -119,13 +121,16 @@ import { createLegend } from "./legendUtils";
       });
 
       const labels = renderer.uniqueValueInfos
-        .filter( info => info.value !== "other" && info.label)
+        // .filter( info => info.value !== "other" && info.label)
         .map( info => info.label);
+
+      const title = renderer.valueExpressionTitle || renderer.legendOptions && renderer.legendOptions.title;
 
       createLegend({
         colors,
         gradient: false,
-        labels
+        labels,
+        title
       });
     }
   }
@@ -145,13 +150,6 @@ import { createLegend } from "./legendUtils";
   // endYearChangeSpan.innerHTML = years.next.toString();
   // startYearChangeSpan.innerHTML = years.previous.toString();
   // endYearTotalSpan.innerHTML = years.next.toString();
-
-  const yearSelectExpand = new Expand({
-    view,
-    content: document.getElementById(`select-parent`),
-    expandIconClass: "esri-icon-time-clock"
-  });
-  view.ui.add(yearSelectExpand, `top-left`);
 
   yearSlider.watch("values", ([ year ]) => {
     // startYearChangeSpan.innerHTML = (year - 4).toString();

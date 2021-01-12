@@ -3,9 +3,10 @@ import Color = require("esri/Color");
 import ColorVariable = require("esri/renderers/visualVariables/ColorVariable");
 import SizeVariable = require("esri/renderers/visualVariables/SizeVariable");
 import SizeStop = require("esri/renderers/visualVariables/support/SizeStop");
+import cimSymbolUtils = require("esri/symbols/support/cimSymbolUtils");
 import { SimpleFillSymbol } from "esri/symbols";
 import { years, fieldInfos, dColor, rColor, selectedYear } from "./config";
-import { aboveSymbol, belowSymbol } from "./symbolUtils";
+import { aboveSymbol, belowSymbol, caretCircleDown, caretCircleUp, caretDown, caretUp, minusSymbol, plusSymbol } from "./symbolUtils";
 
 ////////////////////////////////////////////////////
 //
@@ -46,19 +47,31 @@ export const countyChangeAllRenderer = (params: RendererParams) => {
         "other"
       );
     `,
-    valueExpressionTitle: "Predominant voter shift ${previousYear}-${year}",
+    valueExpressionTitle: `Predominant party shift ${previousYear}-${year}`,
     uniqueValueInfos: [{
       value: "democrat",
-      label: "More Democrat",
-      symbol: createSymbol(new Color("rgba(60, 108, 204, 1)"))
+      label: "Democrat",
+      symbol: createArrowSymbol({
+        color: new Color("rgba(60, 108, 204, 1)"),
+        rotation: 45
+      })
+      // symbol: createSymbol(new Color("rgba(60, 108, 204, 1)"))
     }, {
       value: "other",
-      label: "More Other",
-      symbol: createSymbol(new Color("rgba(181, 166, 0, 1)"))
+      label: "Other",
+      symbol: createArrowSymbol({
+        color: new Color("rgba(181, 166, 0, 1)"),
+        rotation: 0
+      })
+      // symbol: createSymbol(new Color("rgba(181, 166, 0, 1)"))
     }, {
       value: "republican",
-      label: "More Republican",
-      symbol: createSymbol(new Color("rgba(220, 75, 0, 1)"))
+      label: "Republican",
+      symbol: createArrowSymbol({
+        color: new Color("rgba(220, 75, 0, 1)"),
+        rotation: -45
+      })
+      // symbol: createSymbol(new Color("rgba(220, 75, 0, 1)"))
     }],
     visualVariables: [
       new SizeVariable({
@@ -88,20 +101,20 @@ export const countyChangeAllRenderer = (params: RendererParams) => {
           type: "size",
           valueExpression: "$view.scale",
           stops: [
-            new SizeStop({ size: 38.6, value: 288895 }),
-            new SizeStop({ size: 38.6, value: 2311162 }),
-            new SizeStop({ size: 24, value: 18489297 }),
-            new SizeStop({ size: 11, value: 147914381 })
+            new SizeStop({ size: 45, value: 288895 }),
+            new SizeStop({ size: 38, value: 2311162 }),
+            new SizeStop({ size: 30, value: 18489297 }),
+            new SizeStop({ size: 18, value: 147914381 })
           ]
         },
         minSize: {
           type: "size",
           valueExpression: "$view.scale",
           stops: [
-            new SizeStop({ size: 1, value: 288895 }),
-            new SizeStop({ size: 1, value: 2311162 }),
-            new SizeStop({ size: 0.8, value: 18489297 }),
-            new SizeStop({ size: 0.4, value: 147914381 })
+            new SizeStop({ size: 6, value: 288895 }),
+            new SizeStop({ size: 4, value: 2311162 }),
+            new SizeStop({ size: 1, value: 18489297 }),
+            new SizeStop({ size: 1, value: 147914381 })
           ]
         }
       })
@@ -128,7 +141,13 @@ export const countyChangePartyRenderer = (params: RendererParams) => {
   const partyLabels = {
     rep: [ "Less Republican", "More Republican" ],
     dem: [ "Less Democrat", "More Democrat" ],
-    oth: [ "Fewer other votes", "More other votes" ]
+    oth: [ "Less third party", "More third party" ]
+  }
+
+  const partyLong = {
+    rep: "Republican",
+    dem: "Democrat",
+    oth: "other",
   }
 
   const colors = ramps[party];
@@ -154,11 +173,11 @@ export const countyChangePartyRenderer = (params: RendererParams) => {
     classBreakInfos: [{
       minValue: -9007199254740991,
       maxValue: 0,
-      symbol: belowSymbol //createSymbol(new Color(colors[0]))
+      symbol: caretCircleDown //belowSymbol  // belowSymbol //createSymbol(new Color(colors[0]))
     }, {
       minValue: 0,
       maxValue: 9007199254740991,
-      symbol: aboveSymbol   // createSymbol(new Color(colors[4]))
+      symbol: caretCircleUp// aboveSymbol  //aboveSymbol   // createSymbol(new Color(colors[4]))
     }],
     visualVariables: [
       new ColorVariable({
@@ -171,7 +190,7 @@ export const countyChangePartyRenderer = (params: RendererParams) => {
 
           return ${party}Share${year} - ${party}Share${previousYear};
         `,
-        valueExpressionTitle: `Shift in party votes`,
+        valueExpressionTitle: `Shift in ${partyLong[party]} votes ${previousYear}-${year}`,
         stops: [
           { value: -15, color: colors[0], label: labels[0] },
           { value: -5, color: colors[1] },
@@ -192,11 +211,11 @@ export const countyChangePartyRenderer = (params: RendererParams) => {
         `,
         valueExpressionTitle: "Shift in percentage points",
         stops: [
-          { value: -40, size: 24 },
-          { value: -20, size: 12 },
-          { value: 0, size: 1 },
-          { value: 20, size: 12 },
-          { value: 40, size: 24 }
+          { value: -40, size: 28 },
+          { value: -20, size: 15 },
+          { value: 0, size: 2 },
+          { value: 20, size: 15 },
+          { value: 40, size: 28 }
         ]
       })
     ]
@@ -214,4 +233,16 @@ function createSymbol(color: Color){
       color: [ 255,255,255,0.3 ]
     }
   }
+}
+
+interface ArrowSymbol {
+  color: Color;
+  rotation: number;
+}
+function createArrowSymbol(params: ArrowSymbol){
+  const { color, rotation } = params;
+  const symbol = aboveSymbol.clone();
+  cimSymbolUtils.applyCIMSymbolColor(symbol, color);
+  cimSymbolUtils.applyCIMSymbolRotation(symbol, rotation);
+  return symbol;
 }

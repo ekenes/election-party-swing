@@ -4,15 +4,18 @@ import symbolUtils = require("esri/symbols/support/symbolUtils");
 const rampContainer = document.getElementById("ramp-container") as HTMLDivElement;
 const upperLabel = document.getElementById("right-label") as HTMLDivElement;
 const lowerLabel = document.getElementById("left-label") as HTMLDivElement;
+const centerLabel = document.getElementById("center-label") as HTMLDivElement;
+const legendTitle = document.getElementById("legend-title") as HTMLDivElement;
 
 interface CreateLegendParams {
   colors: Color[];
   gradient?: boolean;
   labels?: string[];
+  title?: string;
 }
 
 export function createLegend(params: CreateLegendParams){
-  const { colors, gradient, labels } = params;
+  const { colors, gradient, labels, title } = params;
   rampContainer.innerHTML = null;
 
   const rampElement = symbolUtils.renderColorRampPreviewHTML(colors, {
@@ -26,6 +29,11 @@ export function createLegend(params: CreateLegendParams){
 
   if(labels){
     lowerLabel.innerHTML = labels[0];
-    upperLabel.innerHTML = labels[1];
+    centerLabel.innerHTML = labels.length === 3 ? labels[1] : null;
+    upperLabel.innerHTML = labels.length === 3 ? labels[2] : labels[1];
+  }
+
+  if(title){
+    legendTitle.innerHTML = title;
   }
 }

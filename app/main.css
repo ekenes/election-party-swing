@@ -6,20 +6,25 @@ body,
   height: 100%;
   width: 100%;
 }
-#left-label{
-  float: left;
-}
-#right-label{
-  float: right;
+#labels{
+  display: flex;
+  justify-content: space-between;
 }
 #legend-container{
   padding: 10px;
   position: absolute;
   left: 10px;
   bottom: 35px;
+  background-color: white;
+  height: 85px;
 }
-#legend{
-  background-color: rgba(0,0,0,0);
+#legend-title{
+  font-size: 12pt;
+  text-align: center;
+  width: 180px;
+  margin: auto;
+  line-height: 1.4em;
+  padding-bottom: 5px;
 }
 #title {
   font-size: 18pt;
@@ -27,7 +32,7 @@ body,
 }
 #infoDiv{
   padding: 10px;
-  height: 150px;
+  height: 155px;
 }
 #subtitle {
   padding: 10px 0 10px 0;
@@ -40,6 +45,7 @@ body,
 #parties{
   display: flex;
   justify-content: center;
+  padding-bottom: 5px;
 }
 .rep-active {
   background-color: rgba(220, 75, 0, 1);

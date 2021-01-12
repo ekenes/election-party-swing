@@ -34,7 +34,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/widgets/Expand", "esri/symbols/support/cimSymbolUtils", "./config", "./rendererUtils", "./legendUtils"], function (require, exports, EsriMap, MapView, FeatureLayer, Expand, cimSymbolUtils, config_1, rendererUtils_1, legendUtils_1) {
+define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/symbols/support/cimSymbolUtils", "./config", "./rendererUtils", "./legendUtils"], function (require, exports, EsriMap, MapView, FeatureLayer, cimSymbolUtils, config_1, rendererUtils_1, legendUtils_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     (function () { return __awaiter(void 0, void 0, void 0, function () {
@@ -55,10 +55,12 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/layers/Fea
                 var labels = colorVariable.stops
                     .filter(function (stop) { return stop.label; })
                     .map(function (stop) { return stop.label; });
+                var title = colorVariable.valueExpressionTitle || colorVariable.legendOptions && colorVariable.legendOptions.title;
                 legendUtils_1.createLegend({
                     colors: colors,
                     gradient: true,
-                    labels: labels
+                    labels: labels,
+                    title: title
                 });
             }
             if (renderer.type === "unique-value") {
@@ -72,16 +74,18 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/layers/Fea
                     return symbol.color;
                 });
                 var labels = renderer.uniqueValueInfos
-                    .filter(function (info) { return info.value !== "other" && info.label; })
+                    // .filter( info => info.value !== "other" && info.label)
                     .map(function (info) { return info.label; });
+                var title = renderer.valueExpressionTitle || renderer.legendOptions && renderer.legendOptions.title;
                 legendUtils_1.createLegend({
                     colors: colors,
                     gradient: false,
-                    labels: labels
+                    labels: labels,
+                    title: title
                 });
             }
         }
-        var map, view, commonLayerOptions, countyChangeLayer, repBtn, demBtn, othBtn, allBtn, btns, yearSelectExpand;
+        var map, view, commonLayerOptions, countyChangeLayer, repBtn, demBtn, othBtn, allBtn, btns;
         return __generator(this, function (_a) {
             map = new EsriMap({
                 basemap: {
@@ -135,12 +139,15 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/layers/Fea
             });
             updateLayers({ year: config_1.selectedYear, party: config_1.selectedParty });
             view.map.add(countyChangeLayer);
-            yearSelectExpand = new Expand({
-                view: view,
-                content: document.getElementById("select-parent"),
-                expandIconClass: "esri-icon-time-clock"
-            });
-            view.ui.add(yearSelectExpand, "top-left");
+            // const totalLegend = document.getElementById(`total-legend`) as HTMLDivElement;
+            // const changeLegend = document.getElementById(`change-legend`) as HTMLDivElement;
+            // const infoToggle = document.getElementById(`info-toggle`) as HTMLDivElement;
+            // const endYearChangeSpan = document.getElementById(`end-year-change`) as HTMLSpanElement;
+            // const startYearChangeSpan = document.getElementById(`start-year-change`) as HTMLSpanElement;
+            // const endYearTotalSpan = document.getElementById(`end-year-total`) as HTMLSpanElement;
+            // endYearChangeSpan.innerHTML = years.next.toString();
+            // startYearChangeSpan.innerHTML = years.previous.toString();
+            // endYearTotalSpan.innerHTML = years.next.toString();
             config_1.yearSlider.watch("values", function (_a) {
                 // startYearChangeSpan.innerHTML = (year - 4).toString();
                 // endYearChangeSpan.innerHTML = year.toString();
