@@ -3,6 +3,7 @@ import EsriMap = require("esri/Map");
 import MapView = require("esri/views/MapView");
 import FeatureLayer = require("esri/layers/FeatureLayer");
 import cimSymbolUtils = require("esri/symbols/support/cimSymbolUtils");
+import Legend = require("esri/widgets/Legend");
 
 import { referenceScale, maxScale, basemapPortalItem, countiesLayerPortalItem, years, setSelectedYear, getUrlParams, selectedYear, yearSlider, selectedParty, setSelectedParty } from "./config";
 import { countyChangeAllRenderer, countyChangePartyRenderer, RendererParams } from "./rendererUtils";
@@ -60,6 +61,7 @@ import { Extent } from "esri/geometry";
       }
     }
   });
+  view.ui.add(new Legend({ view }), "bottom-right");
 
   view.ui.add("infoDiv", "top-right");
   view.watch( "extent", (extent) => {
@@ -67,6 +69,7 @@ import { Extent } from "esri/geometry";
     console.log(JSON.stringify(extent.toJSON()))
   });
   const commonLayerOptions = {
+    title: " ",
     outFields: ["*"]
   };
 
@@ -93,7 +96,7 @@ import { Extent } from "esri/geometry";
       portalItem: {
         id: countiesLayerPortalItem
       },
-      legendEnabled: false,
+      // legendEnabled: false,
       renderer: party && party !== "all" ? countyChangePartyRenderer(params) : countyChangeAllRenderer(params),
       labelsVisible: false,
       popupTemplate: countyPopupTemplate()

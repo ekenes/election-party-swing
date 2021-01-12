@@ -94,7 +94,7 @@ export const countyChangeAllRenderer = (params: RendererParams) => {
 
           return Max(repChange, demChange, othChange)
         `,
-        valueExpressionTitle: "Shift in percentage points",
+        valueExpressionTitle: `Shift in percentage points`,
         minDataValue: 0,
         maxDataValue: 40,
         maxSize: {
@@ -154,6 +154,14 @@ export const countyChangePartyRenderer = (params: RendererParams) => {
   const labels = partyLabels[party];
 
   return new ClassBreaksRenderer({
+    authoringInfo: {
+      type: "univariate-color-size",
+      univariateTheme: "above-and-below",
+      statistics: {
+        max: 40,
+        min: -40
+      }
+    },
     valueExpression: `
       var all${year} = $feature["rep_${year}"] + $feature["oth_${year}"] + $feature["dem_${year}"];
       var all${previousYear} = $feature["rep_${previousYear}"] + $feature["oth_${previousYear}"] + $feature["dem_${previousYear}"];
@@ -184,7 +192,7 @@ export const countyChangePartyRenderer = (params: RendererParams) => {
 
           return ${party}Share${year} - ${party}Share${previousYear};
         `,
-        valueExpressionTitle: `Shift in ${partyLong[party]} votes ${previousYear}-${year}`,
+        valueExpressionTitle: `Shift in ${partyLong[party]} votes by percentage points (${previousYear}-${year})`,
         stops: [
           { value: -15, color: colors[0], label: labels[0] },
           { value: -5, color: colors[1] },
@@ -203,7 +211,7 @@ export const countyChangePartyRenderer = (params: RendererParams) => {
 
           return ${party}Share${year} - ${party}Share${previousYear};
         `,
-        valueExpressionTitle: "Shift in percentage points",
+        valueExpressionTitle: `Shift in ${partyLong[party]} votes by percentage points (${previousYear}-${year})`,
         stops: [
           { value: -40, size: 28 },
           { value: -20, size: 15 },
