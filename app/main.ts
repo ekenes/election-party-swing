@@ -8,6 +8,7 @@ import { referenceScale, maxScale, basemapPortalItem, countiesLayerPortalItem, y
 import { countyChangeAllRenderer, countyChangePartyRenderer, RendererParams } from "./rendererUtils";
 import { createLegend, updateResultsDisplay } from "./legendUtils";
 import { countyPopupTemplate } from "./popupUtils";
+import { Extent } from "esri/geometry";
 
 ( async () => {
 
@@ -19,16 +20,27 @@ import { countyPopupTemplate } from "./popupUtils";
     }
   });
 
+  const initialExtent = new Extent({
+    spatialReference: {
+      wkid: 102100
+    },
+    xmin: -14827488,
+    ymin: 2871580,
+    xmax: -7008078,
+    ymax: 6990447
+  });
+
   const view = new MapView({
     container: `viewDiv`,
     map: map,
-    center: [-95, 40],
+    extent: initialExtent,
     scale: referenceScale * 8,
     constraints: {
-      minScale: 0,
+      minScale: 24992582*2,
       maxScale,
       snapToZoom: false,
-      rotationEnabled: false
+      rotationEnabled: false,
+      geometry: initialExtent
     },
     highlightOptions: {
       fillOpacity: 0
@@ -50,7 +62,10 @@ import { countyPopupTemplate } from "./popupUtils";
   });
 
   view.ui.add("infoDiv", "top-right");
-
+  view.watch( "extent", (extent) => {
+    console.log(view.scale)
+    console.log(JSON.stringify(extent.toJSON()))
+  });
   const commonLayerOptions = {
     outFields: ["*"]
   };

@@ -34,7 +34,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/symbols/support/cimSymbolUtils", "./config", "./rendererUtils", "./legendUtils", "./popupUtils"], function (require, exports, EsriMap, MapView, FeatureLayer, cimSymbolUtils, config_1, rendererUtils_1, legendUtils_1, popupUtils_1) {
+define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/symbols/support/cimSymbolUtils", "./config", "./rendererUtils", "./legendUtils", "./popupUtils", "esri/geometry"], function (require, exports, EsriMap, MapView, FeatureLayer, cimSymbolUtils, config_1, rendererUtils_1, legendUtils_1, popupUtils_1, geometry_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     (function () { return __awaiter(void 0, void 0, void 0, function () {
@@ -87,7 +87,7 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/layers/Fea
             }
             legendUtils_1.updateResultsDisplay(config_1.selectedYear);
         }
-        var map, view, commonLayerOptions, countyChangeLayer, btns, _a, year, party;
+        var map, initialExtent, view, commonLayerOptions, countyChangeLayer, btns, _a, year, party;
         return __generator(this, function (_b) {
             map = new EsriMap({
                 basemap: {
@@ -96,16 +96,26 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/layers/Fea
                     }
                 }
             });
+            initialExtent = new geometry_1.Extent({
+                spatialReference: {
+                    wkid: 102100
+                },
+                xmin: -14827488,
+                ymin: 2871580,
+                xmax: -7008078,
+                ymax: 6990447
+            });
             view = new MapView({
                 container: "viewDiv",
                 map: map,
-                center: [-95, 40],
+                extent: initialExtent,
                 scale: config_1.referenceScale * 8,
                 constraints: {
-                    minScale: 0,
+                    minScale: 24992582 * 2,
                     maxScale: config_1.maxScale,
                     snapToZoom: false,
-                    rotationEnabled: false
+                    rotationEnabled: false,
+                    geometry: initialExtent
                 },
                 highlightOptions: {
                     fillOpacity: 0
@@ -126,6 +136,10 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/layers/Fea
                 }
             });
             view.ui.add("infoDiv", "top-right");
+            view.watch("extent", function (extent) {
+                console.log(view.scale);
+                console.log(JSON.stringify(extent.toJSON()));
+            });
             commonLayerOptions = {
                 outFields: ["*"]
             };
