@@ -85,6 +85,7 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/layers/Fea
                     title: title
                 });
             }
+            legendUtils_1.updateResultsDisplay(config_1.selectedYear);
         }
         var map, view, commonLayerOptions, countyChangeLayer, btns, _a, year, party;
         return __generator(this, function (_b) {

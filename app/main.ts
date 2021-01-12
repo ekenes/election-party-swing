@@ -6,7 +6,7 @@ import cimSymbolUtils = require("esri/symbols/support/cimSymbolUtils");
 
 import { referenceScale, maxScale, basemapPortalItem, countiesLayerPortalItem, years, setSelectedYear, getUrlParams, selectedYear, yearSlider, selectedParty, setSelectedParty } from "./config";
 import { countyChangeAllRenderer, countyChangePartyRenderer, RendererParams } from "./rendererUtils";
-import { createLegend } from "./legendUtils";
+import { createLegend, updateResultsDisplay } from "./legendUtils";
 import { countyPopupTemplate } from "./popupUtils";
 
 ( async () => {
@@ -84,8 +84,6 @@ import { countyPopupTemplate } from "./popupUtils";
       popupTemplate: countyPopupTemplate()
     });
 
-
-
     const renderer = countyChangeLayer.renderer as esri.RendererWithVisualVariables;
 
     if(renderer.visualVariables.some( vv => vv.type === "color")){
@@ -128,6 +126,8 @@ import { countyPopupTemplate } from "./popupUtils";
         title
       });
     }
+
+    updateResultsDisplay(selectedYear);
   }
 
   let { year, party } = getUrlParams();
