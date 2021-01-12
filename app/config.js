@@ -2,21 +2,27 @@ define(["require", "exports", "esri/Color", "esri/widgets/Slider"], function (re
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var validYears = [2000, 2004, 2008, 2012, 2016, 2020];
+    var validParties = ["rep", "dem", "oth", "all"];
     function getUrlParams() {
         var queryParams = document.location.search.substr(1);
         var result = {};
         queryParams.split("&").forEach(function (part) {
             var item = part.split("=");
-            result[item[0]] = parseInt(decodeURIComponent(item[1]));
+            var paramName = item[0];
+            result[item[0]] = paramName === "year" ? parseInt(decodeURIComponent(item[1])) : decodeURIComponent(item[1]);
         });
-        return result.year;
+        return result;
     }
+    exports.getUrlParams = getUrlParams;
     // function to set an id as a url param
-    function setUrlParams(year) {
-        window.history.pushState("", "", window.location.pathname + "?year=" + year);
+    function setUrlParams(params) {
+        var year = params.year, party = params.party;
+        year = year || exports.selectedYear;
+        party = party || exports.selectedParty;
+        window.history.pushState("", "", window.location.pathname + "?year=" + year + "&party=" + party);
     }
     exports.setUrlParams = setUrlParams;
-    var year = getUrlParams();
+    var _a = getUrlParams(), year = _a.year, party = _a.party;
     exports.yearSlider = new Slider({
         container: document.getElementById("slider"),
         min: 2004,
@@ -35,26 +41,36 @@ define(["require", "exports", "esri/Color", "esri/widgets/Slider"], function (re
     });
     if (!year) {
         year = 2020;
-        setUrlParams(year);
+        setUrlParams({ year: year });
         exports.yearSlider.values = [year];
     }
     else {
         if (year && validYears.indexOf(year) === -1) {
             alert("You must enter a valid U.S. presidential election year (e.g. 2004, 2008, 20012, 2016, 2020)");
             year = 2020;
-            setUrlParams(year);
+            setUrlParams({ year: year });
         }
         exports.yearSlider.values = [year];
+    }
+    if (!party) {
+        party = "all";
+        setUrlParams({ party: party });
+    }
+    else {
+        if (party && validParties.indexOf(party) === -1) {
+            alert("You must enter a valid party (e.g. 'rep', 'dem', 'oth', 'all')");
+            party = "all";
+            setUrlParams({ party: party });
+        }
     }
     exports.basemapPortalItem = "fbfb62f3599f41e5a77845f863e2872f";
     exports.countiesLayerPortalItem = "fe9e032e4a854c74890750214a3edd8b";
     exports.maxScale = 4622324 / 16;
     exports.referenceScale = 2311162;
     exports.scaleThreshold = 9244600; // 9244649;
-    exports.selectedYear = year;
-    exports.selectedParty = "all";
     function setSelectedParty(party) {
         exports.selectedParty = party;
+        setUrlParams({ party: party });
         // const btn = document.getElementById(party) as HTMLButtonElement;
         var btns = Array.from(document.getElementsByTagName("button"));
         btns.forEach(function (btn) {
@@ -167,6 +183,7 @@ define(["require", "exports", "esri/Color", "esri/widgets/Slider"], function (re
     exports.haloSize = 1;
     function setSelectedYear(year) {
         exports.selectedYear = year;
+        setUrlParams({ year: year });
         exports.years = {
             previous: exports.selectedYear - 4,
             next: exports.selectedYear

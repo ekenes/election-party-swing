@@ -4,7 +4,7 @@ import MapView = require("esri/views/MapView");
 import FeatureLayer = require("esri/layers/FeatureLayer");
 import cimSymbolUtils = require("esri/symbols/support/cimSymbolUtils");
 
-import { referenceScale, maxScale, basemapPortalItem, countiesLayerPortalItem, years, setSelectedYear, setUrlParams, selectedYear, yearSlider, selectedParty, setSelectedParty } from "./config";
+import { referenceScale, maxScale, basemapPortalItem, countiesLayerPortalItem, years, setSelectedYear, getUrlParams, selectedYear, yearSlider, selectedParty, setSelectedParty } from "./config";
 import { countyChangeAllRenderer, countyChangePartyRenderer, RendererParams } from "./rendererUtils";
 import { createLegend } from "./legendUtils";
 import { countyPopupTemplate } from "./popupUtils";
@@ -56,11 +56,6 @@ import { countyPopupTemplate } from "./popupUtils";
   };
 
   const countyChangeLayer = new FeatureLayer(commonLayerOptions);
-
-  const repBtn = document.getElementById("rep") as HTMLButtonElement;
-  const demBtn = document.getElementById("dem") as HTMLButtonElement;
-  const othBtn = document.getElementById("oth") as HTMLButtonElement;
-  const allBtn = document.getElementById("all") as HTMLButtonElement;
 
   const btns = Array.from(document.getElementsByTagName("button"));
 
@@ -135,6 +130,9 @@ import { countyPopupTemplate } from "./popupUtils";
     }
   }
 
+  let { year, party } = getUrlParams();
+  setSelectedParty(party || "all");
+  setSelectedYear(year || 2020);
   updateLayers({ year: selectedYear, party: selectedParty });
 
   view.map.add(countyChangeLayer);
@@ -155,8 +153,6 @@ import { countyPopupTemplate } from "./popupUtils";
     // startYearChangeSpan.innerHTML = (year - 4).toString();
     // endYearChangeSpan.innerHTML = year.toString();
     // endYearTotalSpan.innerHTML = year.toString();
-
-    setUrlParams(year)
     setSelectedYear(year);
     updateLayers({year, party: selectedParty });
   });

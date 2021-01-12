@@ -15,7 +15,7 @@ import { aboveSymbol, belowSymbol, caretCircleDown, caretCircleUp, caretDown, ca
 ///////////////////////////////////////////////////
 
 export interface RendererParams {
-  year: 2004 | 2008 | 2012 | 2016 | 2020 | number;
+  year?: 2004 | 2008 | 2012 | 2016 | 2020 | number;
   party?: "all" | "rep" | "dem" | "oth";
 }
 

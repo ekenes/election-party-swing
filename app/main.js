@@ -86,8 +86,8 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/layers/Fea
                 });
             }
         }
-        var map, view, commonLayerOptions, countyChangeLayer, repBtn, demBtn, othBtn, allBtn, btns;
-        return __generator(this, function (_a) {
+        var map, view, commonLayerOptions, countyChangeLayer, btns, _a, year, party;
+        return __generator(this, function (_b) {
             map = new EsriMap({
                 basemap: {
                     portalItem: {
@@ -129,10 +129,6 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/layers/Fea
                 outFields: ["*"]
             };
             countyChangeLayer = new FeatureLayer(commonLayerOptions);
-            repBtn = document.getElementById("rep");
-            demBtn = document.getElementById("dem");
-            othBtn = document.getElementById("oth");
-            allBtn = document.getElementById("all");
             btns = Array.from(document.getElementsByTagName("button"));
             btns.forEach(function (btn) {
                 btn.addEventListener("click", function () {
@@ -143,6 +139,9 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/layers/Fea
                     });
                 });
             });
+            _a = config_1.getUrlParams(), year = _a.year, party = _a.party;
+            config_1.setSelectedParty(party || "all");
+            config_1.setSelectedYear(year || 2020);
             updateLayers({ year: config_1.selectedYear, party: config_1.selectedParty });
             view.map.add(countyChangeLayer);
             // const totalLegend = document.getElementById(`total-legend`) as HTMLDivElement;
@@ -155,11 +154,10 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/layers/Fea
             // startYearChangeSpan.innerHTML = years.previous.toString();
             // endYearTotalSpan.innerHTML = years.next.toString();
             config_1.yearSlider.watch("values", function (_a) {
+                var year = _a[0];
                 // startYearChangeSpan.innerHTML = (year - 4).toString();
                 // endYearChangeSpan.innerHTML = year.toString();
                 // endYearTotalSpan.innerHTML = year.toString();
-                var year = _a[0];
-                config_1.setUrlParams(year);
                 config_1.setSelectedYear(year);
                 updateLayers({ year: year, party: config_1.selectedParty });
             });

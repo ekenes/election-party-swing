@@ -2,32 +2,34 @@ import Color = require("esri/Color");
 import Slider = require("esri/widgets/Slider");
 import { RendererParams } from "./rendererUtils";
 
-
-// function to retrieve query parameters (in this case only id)
-interface UrlParams {
-  year?: 2004 | 2008 | 2012 | 2016 | 2020 | number,
-}
-
 const validYears = [ 2000, 2004, 2008, 2012, 2016, 2020 ];
+const validParties = [ "rep", "dem", "oth", "all" ];
 
-function getUrlParams() {
+export let selectedYear: number;
+export let selectedParty: RendererParams["party"];
+
+export function getUrlParams() {
   const queryParams = document.location.search.substr(1);
-  let result: UrlParams = {};
+  let result: RendererParams = {};
 
   queryParams.split("&").forEach(function(part) {
     var item = part.split("=");
-    result[item[0]] = parseInt(decodeURIComponent(item[1]));
+    var paramName = item[0];
+    result[item[0]] = paramName === "year" ? parseInt(decodeURIComponent(item[1])) : decodeURIComponent(item[1]);
   });
 
-  return result.year;
+  return result;
 }
 
 // function to set an id as a url param
-export function setUrlParams(year: UrlParams["year"]) {
-  window.history.pushState("", "", `${window.location.pathname}?year=${year}`);
+export function setUrlParams(params: RendererParams) {
+  let { year, party } = params;
+  year = year || selectedYear;
+  party = party || selectedParty;
+  window.history.pushState("", "", `${window.location.pathname}?year=${year}&party=${party}`);
 }
 
-let year = getUrlParams();
+let { year, party } = getUrlParams();
 
 export const yearSlider = new Slider({
   container: document.getElementById("slider"),
@@ -48,15 +50,26 @@ export const yearSlider = new Slider({
 
 if(!year){
   year = 2020;
-  setUrlParams(year);
+  setUrlParams({year});
   yearSlider.values = [ year ];
 } else {
   if ( year && validYears.indexOf(year) === -1 ){
     alert("You must enter a valid U.S. presidential election year (e.g. 2004, 2008, 20012, 2016, 2020)")
     year = 2020;
-    setUrlParams(year);
+    setUrlParams({year});
   }
   yearSlider.values = [ year ];
+}
+
+if(!party){
+  party = "all";
+  setUrlParams({ party });
+} else {
+  if ( party && validParties.indexOf(party) === -1 ){
+    alert("You must enter a valid party (e.g. 'rep', 'dem', 'oth', 'all')")
+    party = "all";
+    setUrlParams({party});
+  }
 }
 
 export const basemapPortalItem = "fbfb62f3599f41e5a77845f863e2872f";
@@ -66,11 +79,9 @@ export const maxScale = 4622324/16;
 export const referenceScale = 2311162;
 export const scaleThreshold = 9244600;  // 9244649;
 
-export let selectedYear = year;
-export let selectedParty: RendererParams["party"] = "all";
-
 export function setSelectedParty(party: RendererParams["party"]){
   selectedParty = party;
+  setUrlParams({ party });
   // const btn = document.getElementById(party) as HTMLButtonElement;
   const btns = Array.from(document.getElementsByTagName("button"));
   btns.forEach(btn => {
@@ -184,9 +195,9 @@ export const oColor = new Color("rgba(181, 166, 0, 1)");
 export const haloColor = new Color("#f7f7f7");
 export const haloSize = 1;
 
-export function setSelectedYear(year: UrlParams["year"]) {
+export function setSelectedYear(year: RendererParams["year"]) {
   selectedYear = year;
-
+  setUrlParams({ year });
   years = {
     previous: selectedYear - 4,
     next: selectedYear
