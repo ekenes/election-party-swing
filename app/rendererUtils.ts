@@ -153,12 +153,6 @@ export const countyChangePartyRenderer = (params: RendererParams) => {
   const colors = ramps[party];
   const labels = partyLabels[party];
 
-  // const colors = [ "#667181", "#97a2b3", "#ebd9d8", "#d5857f", "#be3027" ];
-  // const colors = [ "#ca0020", "#f4a582", "#ffffff", "#bababa", "#404040" ];
-  // const colors = [ "#78716e", "#a19b96", "#ced9d9", "#54c5d5", "#009db3" ];
-  // const colors = [ "#faefdb", "#a19c8f", "#00708d", "#40b2c6", "#80f3ff" ];
-  // const colors = [ "#ffff00", "#a4a41c", "#424038", "#8a8a8a", "#cccccc" ];
-
   return new ClassBreaksRenderer({
     valueExpression: `
       var all${year} = $feature["rep_${year}"] + $feature["oth_${year}"] + $feature["dem_${year}"];

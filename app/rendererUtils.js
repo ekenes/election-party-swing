@@ -85,11 +85,6 @@ define(["require", "exports", "esri/renderers", "esri/Color", "esri/renderers/vi
         };
         var colors = ramps[party];
         var labels = partyLabels[party];
-        // const colors = [ "#667181", "#97a2b3", "#ebd9d8", "#d5857f", "#be3027" ];
-        // const colors = [ "#ca0020", "#f4a582", "#ffffff", "#bababa", "#404040" ];
-        // const colors = [ "#78716e", "#a19b96", "#ced9d9", "#54c5d5", "#009db3" ];
-        // const colors = [ "#faefdb", "#a19c8f", "#00708d", "#40b2c6", "#80f3ff" ];
-        // const colors = [ "#ffff00", "#a4a41c", "#424038", "#8a8a8a", "#cccccc" ];
         return new renderers_1.ClassBreaksRenderer({
             valueExpression: "\n      var all" + year + " = $feature[\"rep_" + year + "\"] + $feature[\"oth_" + year + "\"] + $feature[\"dem_" + year + "\"];\n      var all" + previousYear + " = $feature[\"rep_" + previousYear + "\"] + $feature[\"oth_" + previousYear + "\"] + $feature[\"dem_" + previousYear + "\"];\n\n      var " + party + "Share" + previousYear + " = ($feature[\"" + party + "_" + previousYear + "\"] / all" + previousYear + ") * 100;\n      var " + party + "Share" + year + " = ($feature[\"" + party + "_" + year + "\"] / all" + year + ") * 100;\n\n      return " + party + "Share" + year + " - " + party + "Share" + previousYear + ";\n    ",
             valueExpressionTitle: "Predominant voter shift " + previousYear + "-" + year,

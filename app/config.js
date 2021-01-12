@@ -255,5 +255,91 @@ define(["require", "exports", "esri/Color", "esri/widgets/Slider"], function (re
         };
     }
     exports.setSelectedYear = setSelectedYear;
+    exports.results = {
+        2000: {
+            republican: {
+                candidate: "Bush",
+                electoralVotes: 271
+            },
+            democrat: {
+                candidate: "Gore",
+                electoralVotes: 266
+            },
+            other: {
+                candidate: "Another candidate",
+                electoralVotes: 0
+            }
+        },
+        2004: {
+            republican: {
+                candidate: "Bush",
+                electoralVotes: 286
+            },
+            democrat: {
+                candidate: "Kerry",
+                electoralVotes: 251
+            },
+            other: {
+                candidate: "Another candidate",
+                electoralVotes: 0
+            }
+        },
+        2008: {
+            republican: {
+                candidate: "McCain",
+                electoralVotes: 173
+            },
+            democrat: {
+                candidate: "Obama",
+                electoralVotes: 365
+            },
+            other: {
+                candidate: "Another candidate",
+                electoralVotes: 0
+            }
+        },
+        2012: {
+            republican: {
+                candidate: "Romney",
+                electoralVotes: 206
+            },
+            democrat: {
+                candidate: "Obama",
+                electoralVotes: 332
+            },
+            other: {
+                candidate: "Another candidate",
+                electoralVotes: 0
+            }
+        },
+        2016: {
+            republican: {
+                candidate: "Trump",
+                electoralVotes: 304
+            },
+            democrat: {
+                candidate: "Clinton",
+                electoralVotes: 227
+            },
+            other: {
+                candidate: "Another candidate",
+                electoralVotes: 0
+            }
+        },
+        2020: {
+            republican: {
+                candidate: "Trump",
+                electoralVotes: 232
+            },
+            democrat: {
+                candidate: "Biden",
+                electoralVotes: 306
+            },
+            other: {
+                candidate: "Another candidate",
+                electoralVotes: 0
+            }
+        }
+    };
 });
 //# sourceMappingURL=config.js.map

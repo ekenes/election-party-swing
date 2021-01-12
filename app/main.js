@@ -34,7 +34,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/symbols/support/cimSymbolUtils", "./config", "./rendererUtils", "./legendUtils"], function (require, exports, EsriMap, MapView, FeatureLayer, cimSymbolUtils, config_1, rendererUtils_1, legendUtils_1) {
+define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/symbols/support/cimSymbolUtils", "./config", "./rendererUtils", "./legendUtils", "./popupUtils"], function (require, exports, EsriMap, MapView, FeatureLayer, cimSymbolUtils, config_1, rendererUtils_1, legendUtils_1, popupUtils_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     (function () { return __awaiter(void 0, void 0, void 0, function () {
@@ -47,6 +47,7 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/layers/Fea
                 legendEnabled: false,
                 renderer: party && party !== "all" ? rendererUtils_1.countyChangePartyRenderer(params) : rendererUtils_1.countyChangeAllRenderer(params),
                 labelsVisible: false,
+                popupTemplate: popupUtils_1.countyPopupTemplate()
             });
             var renderer = countyChangeLayer.renderer;
             if (renderer.visualVariables.some(function (vv) { return vv.type === "color"; })) {
@@ -115,7 +116,12 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/layers/Fea
                     xsmall: 544
                 },
                 popup: {
-                    collapseEnabled: false
+                    collapseEnabled: false,
+                    dockEnabled: true,
+                    dockOptions: {
+                        breakpoint: false,
+                        position: "bottom-right"
+                    }
                 }
             });
             view.ui.add("infoDiv", "top-right");

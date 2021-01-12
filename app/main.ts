@@ -2,16 +2,12 @@ import esri = __esri;
 import EsriMap = require("esri/Map");
 import MapView = require("esri/views/MapView");
 import FeatureLayer = require("esri/layers/FeatureLayer");
-import Legend = require("esri/widgets/Legend");
-import symbolUtils = require("esri/symbols/support/symbolUtils");
-import Expand = require("esri/widgets/Expand");
 import cimSymbolUtils = require("esri/symbols/support/cimSymbolUtils");
 
 import { referenceScale, maxScale, basemapPortalItem, countiesLayerPortalItem, years, setSelectedYear, setUrlParams, selectedYear, yearSlider, selectedParty, setSelectedParty } from "./config";
-// import { statePopupTemplate, countyPopupTemplate } from "./popupUtils";
-// import { countyChangeLabelingInfo, countyResultsLabelingInfo, stateChangeLabelingInfo, stateResultsLabelingInfo } from "./labelingUtils";
 import { countyChangeAllRenderer, countyChangePartyRenderer, RendererParams } from "./rendererUtils";
 import { createLegend } from "./legendUtils";
+import { countyPopupTemplate } from "./popupUtils";
 
 ( async () => {
 
@@ -44,7 +40,12 @@ import { createLegend } from "./legendUtils";
       xsmall: 544
     },
     popup: {
-      collapseEnabled: false
+      collapseEnabled: false,
+      dockEnabled: true,
+      dockOptions: {
+        breakpoint: false,
+        position: "bottom-right"
+      }
     }
   });
 
@@ -85,8 +86,7 @@ import { createLegend } from "./legendUtils";
       legendEnabled: false,
       renderer: party && party !== "all" ? countyChangePartyRenderer(params) : countyChangeAllRenderer(params),
       labelsVisible: false,
-      // labelingInfo: countyChangeLabelingInfo(),
-      // popupTemplate: countyPopupTemplate()
+      popupTemplate: countyPopupTemplate()
     });
 
 
