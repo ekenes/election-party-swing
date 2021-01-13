@@ -136,10 +136,6 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/layers/Fea
                 }
             });
             view.ui.add("infoDiv", "top-right");
-            view.watch("extent", function (extent) {
-                console.log(view.scale);
-                console.log(JSON.stringify(extent.toJSON()));
-            });
             commonLayerOptions = {
                 outFields: ["*"]
             };
@@ -159,20 +155,8 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/layers/Fea
             config_1.setSelectedYear(year || 2020);
             updateLayers({ year: config_1.selectedYear, party: config_1.selectedParty });
             view.map.add(countyChangeLayer);
-            // const totalLegend = document.getElementById(`total-legend`) as HTMLDivElement;
-            // const changeLegend = document.getElementById(`change-legend`) as HTMLDivElement;
-            // const infoToggle = document.getElementById(`info-toggle`) as HTMLDivElement;
-            // const endYearChangeSpan = document.getElementById(`end-year-change`) as HTMLSpanElement;
-            // const startYearChangeSpan = document.getElementById(`start-year-change`) as HTMLSpanElement;
-            // const endYearTotalSpan = document.getElementById(`end-year-total`) as HTMLSpanElement;
-            // endYearChangeSpan.innerHTML = years.next.toString();
-            // startYearChangeSpan.innerHTML = years.previous.toString();
-            // endYearTotalSpan.innerHTML = years.next.toString();
             config_1.yearSlider.watch("values", function (_a) {
                 var year = _a[0];
-                // startYearChangeSpan.innerHTML = (year - 4).toString();
-                // endYearChangeSpan.innerHTML = year.toString();
-                // endYearTotalSpan.innerHTML = year.toString();
                 config_1.setSelectedYear(year);
                 updateLayers({ year: year, party: config_1.selectedParty });
             });
