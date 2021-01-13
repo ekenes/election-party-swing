@@ -16,6 +16,14 @@ body,
   left: 10px;
   bottom: 35px;
   background-color: white;
+  width: 320px;
+}
+#size-text{
+  text-align: center;
+  font-size: 8pt;
+  line-height: 1.1em;
+  padding-top: 5px;
+  color: gray;
 }
 #legend-title{
   font-size: 12pt;

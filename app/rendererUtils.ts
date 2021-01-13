@@ -163,11 +163,11 @@ export const countyChangePartyRenderer = (params: RendererParams) => {
     classBreakInfos: [{
       minValue: -9007199254740991,
       maxValue: 0,
-      symbol: caretCircleDown //belowSymbol  // belowSymbol //createSymbol(new Color(colors[0]))
+      symbol: caretCircleDown
     }, {
       minValue: 0,
       maxValue: 9007199254740991,
-      symbol: caretCircleUp// aboveSymbol  //aboveSymbol   // createSymbol(new Color(colors[4]))
+      symbol: caretCircleUp
     }],
     visualVariables: [
       new ColorVariable({

@@ -88,11 +88,11 @@ define(["require", "exports", "esri/renderers", "esri/Color", "esri/renderers/vi
             classBreakInfos: [{
                     minValue: -9007199254740991,
                     maxValue: 0,
-                    symbol: symbolUtils_1.caretCircleDown //belowSymbol  // belowSymbol //createSymbol(new Color(colors[0]))
+                    symbol: symbolUtils_1.caretCircleDown
                 }, {
                     minValue: 0,
                     maxValue: 9007199254740991,
-                    symbol: symbolUtils_1.caretCircleUp // aboveSymbol  //aboveSymbol   // createSymbol(new Color(colors[4]))
+                    symbol: symbolUtils_1.caretCircleUp
                 }],
             visualVariables: [
                 new ColorVariable({
