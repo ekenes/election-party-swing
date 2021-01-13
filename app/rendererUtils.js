@@ -14,7 +14,6 @@ define(["require", "exports", "esri/renderers", "esri/Color", "esri/renderers/vi
                         color: new Color("rgba(60, 108, 204, 1)"),
                         rotation: 45
                     })
-                    // symbol: createSymbol(new Color("rgba(60, 108, 204, 1)"))
                 }, {
                     value: "other",
                     label: "Other",
@@ -22,7 +21,6 @@ define(["require", "exports", "esri/renderers", "esri/Color", "esri/renderers/vi
                         color: new Color("rgba(181, 166, 0, 1)"),
                         rotation: 0
                     })
-                    // symbol: createSymbol(new Color("rgba(181, 166, 0, 1)"))
                 }, {
                     value: "republican",
                     label: "Republican",
@@ -30,7 +28,6 @@ define(["require", "exports", "esri/renderers", "esri/Color", "esri/renderers/vi
                         color: new Color("rgba(220, 75, 0, 1)"),
                         rotation: -45
                     })
-                    // symbol: createSymbol(new Color("rgba(220, 75, 0, 1)"))
                 }],
             visualVariables: [
                 new SizeVariable({
@@ -54,8 +51,8 @@ define(["require", "exports", "esri/renderers", "esri/Color", "esri/renderers/vi
                         stops: [
                             new SizeStop({ size: 6, value: 288895 }),
                             new SizeStop({ size: 4, value: 2311162 }),
-                            new SizeStop({ size: 1, value: 18489297 }),
-                            new SizeStop({ size: 1, value: 147914381 })
+                            new SizeStop({ size: 3, value: 18489297 }),
+                            new SizeStop({ size: 2, value: 147914381 })
                         ]
                     }
                 })
@@ -91,22 +88,22 @@ define(["require", "exports", "esri/renderers", "esri/Color", "esri/renderers/vi
             classBreakInfos: [{
                     minValue: -9007199254740991,
                     maxValue: 0,
-                    symbol: symbolUtils_1.caretCircleDown //belowSymbol  // belowSymbol //createSymbol(new Color(colors[0]))
+                    symbol: symbolUtils_1.caretCircleDown
                 }, {
                     minValue: 0,
                     maxValue: 9007199254740991,
-                    symbol: symbolUtils_1.caretCircleUp // aboveSymbol  //aboveSymbol   // createSymbol(new Color(colors[4]))
+                    symbol: symbolUtils_1.caretCircleUp
                 }],
             visualVariables: [
                 new ColorVariable({
                     valueExpression: "\n          var all" + year + " = $feature[\"rep_" + year + "\"] + $feature[\"oth_" + year + "\"] + $feature[\"dem_" + year + "\"];\n          var all" + previousYear + " = $feature[\"rep_" + previousYear + "\"] + $feature[\"oth_" + previousYear + "\"] + $feature[\"dem_" + previousYear + "\"];\n\n          var " + party + "Share" + previousYear + " = ($feature[\"" + party + "_" + previousYear + "\"] / all" + previousYear + ") * 100;\n          var " + party + "Share" + year + " = ($feature[\"" + party + "_" + year + "\"] / all" + year + ") * 100;\n\n          return " + party + "Share" + year + " - " + party + "Share" + previousYear + ";\n        ",
                     valueExpressionTitle: "Shift in " + partyLong[party] + " votes " + previousYear + "-" + year,
                     stops: [
-                        { value: -15, color: colors[0], label: labels[0] },
-                        { value: -5, color: colors[1] },
-                        { value: 0, color: colors[2] },
-                        { value: 5, color: colors[3] },
-                        { value: 15, color: colors[4], label: labels[1] }
+                        { value: -15, color: colors[0], label: "-20% pts" },
+                        { value: -7.5, color: colors[1] },
+                        { value: 0, color: colors[2], label: "no shift" },
+                        { value: 7.5, color: colors[3] },
+                        { value: 15, color: colors[4], label: "+20% pts" }
                     ]
                 }),
                 new SizeVariable({
@@ -115,7 +112,7 @@ define(["require", "exports", "esri/renderers", "esri/Color", "esri/renderers/vi
                     stops: [
                         { value: -40, size: 28 },
                         { value: -20, size: 15 },
-                        { value: 0, size: 2 },
+                        { value: 0, size: 3 },
                         { value: 20, size: 15 },
                         { value: 40, size: 28 }
                     ]

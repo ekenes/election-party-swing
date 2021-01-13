@@ -34,7 +34,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/symbols/support/cimSymbolUtils", "./config", "./rendererUtils", "./legendUtils", "./popupUtils", "esri/geometry"], function (require, exports, EsriMap, MapView, FeatureLayer, cimSymbolUtils, config_1, rendererUtils_1, legendUtils_1, popupUtils_1, geometry_1) {
+define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "./config", "./rendererUtils", "./legendUtils", "./popupUtils", "esri/geometry"], function (require, exports, EsriMap, MapView, FeatureLayer, config_1, rendererUtils_1, legendUtils_1, popupUtils_1, geometry_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     (function () { return __awaiter(void 0, void 0, void 0, function () {
@@ -49,42 +49,12 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/layers/Fea
                 labelsVisible: false,
                 popupTemplate: popupUtils_1.countyPopupTemplate()
             });
-            var renderer = countyChangeLayer.renderer;
-            if (renderer.visualVariables.some(function (vv) { return vv.type === "color"; })) {
-                var colorVariable = renderer.visualVariables.find(function (vv) { return vv.type === "color"; });
-                var colors = colorVariable.stops.map(function (stop) { return stop.color; });
-                var labels = colorVariable.stops
-                    .filter(function (stop) { return stop.label; })
-                    .map(function (stop) { return stop.label; });
-                var title = colorVariable.valueExpressionTitle || colorVariable.legendOptions && colorVariable.legendOptions.title;
-                legendUtils_1.createLegend({
-                    colors: colors,
-                    gradient: true,
-                    labels: labels,
-                    title: title
-                });
-            }
-            if (renderer.type === "unique-value") {
-                var colors = renderer.uniqueValueInfos
-                    // .filter( info => info.value !== "other")
-                    .map(function (info) {
-                    var symbol = info.symbol;
-                    if (symbol.type === "cim") {
-                        return cimSymbolUtils.getCIMSymbolColor(symbol);
-                    }
-                    return symbol.color;
-                });
-                var labels = renderer.uniqueValueInfos
-                    // .filter( info => info.value !== "other" && info.label)
-                    .map(function (info) { return info.label; });
-                var title = renderer.valueExpressionTitle || renderer.legendOptions && renderer.legendOptions.title;
-                legendUtils_1.createLegend({
-                    colors: colors,
-                    gradient: false,
-                    labels: labels,
-                    title: title
-                });
-            }
+            legendUtils_1.createLegend({
+                layer: countyChangeLayer,
+                view: view,
+                year: config_1.selectedYear,
+                party: config_1.selectedParty
+            });
             legendUtils_1.updateResultsDisplay(config_1.selectedYear);
         }
         var map, initialExtent, view, commonLayerOptions, countyChangeLayer, btns, _a, year, party;

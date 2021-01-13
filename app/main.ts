@@ -1,8 +1,6 @@
-import esri = __esri;
 import EsriMap = require("esri/Map");
 import MapView = require("esri/views/MapView");
 import FeatureLayer = require("esri/layers/FeatureLayer");
-import cimSymbolUtils = require("esri/symbols/support/cimSymbolUtils");
 
 import { referenceScale, maxScale, basemapPortalItem, countiesLayerPortalItem, years, setSelectedYear, getUrlParams, selectedYear, yearSlider, selectedParty, setSelectedParty } from "./config";
 import { countyChangeAllRenderer, countyChangePartyRenderer, RendererParams } from "./rendererUtils";
@@ -95,48 +93,12 @@ import { Extent } from "esri/geometry";
       popupTemplate: countyPopupTemplate()
     });
 
-    const renderer = countyChangeLayer.renderer as esri.RendererWithVisualVariables;
-
-    if(renderer.visualVariables.some( vv => vv.type === "color")){
-      const colorVariable = renderer.visualVariables.find(vv => vv.type === "color") as esri.ColorVariable;
-      const colors = colorVariable.stops.map( stop => stop.color);
-      const labels = colorVariable.stops
-        .filter( stop => stop.label )
-        .map( stop => stop.label);
-      const title = colorVariable.valueExpressionTitle || colorVariable.legendOptions && colorVariable.legendOptions.title;
-
-      createLegend({
-        colors,
-        gradient: true,
-        labels,
-        title
-      });
-    }
-
-    if(renderer.type === "unique-value"){
-      const colors = renderer.uniqueValueInfos
-        // .filter( info => info.value !== "other")
-        .map( info => {
-        const symbol = info.symbol;
-        if(symbol.type === "cim"){
-          return cimSymbolUtils.getCIMSymbolColor(symbol as esri.CIMSymbol);
-        }
-        return symbol.color;
-      });
-
-      const labels = renderer.uniqueValueInfos
-        // .filter( info => info.value !== "other" && info.label)
-        .map( info => info.label);
-
-      const title = renderer.valueExpressionTitle || renderer.legendOptions && renderer.legendOptions.title;
-
-      createLegend({
-        colors,
-        gradient: false,
-        labels,
-        title
-      });
-    }
+    createLegend({
+      layer: countyChangeLayer,
+      view,
+      year: selectedYear,
+      party: selectedParty
+    })
 
     updateResultsDisplay(selectedYear);
   }

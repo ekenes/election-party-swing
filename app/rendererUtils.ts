@@ -55,7 +55,6 @@ export const countyChangeAllRenderer = (params: RendererParams) => {
         color: new Color("rgba(60, 108, 204, 1)"),
         rotation: 45
       })
-      // symbol: createSymbol(new Color("rgba(60, 108, 204, 1)"))
     }, {
       value: "other",
       label: "Other",
@@ -63,7 +62,6 @@ export const countyChangeAllRenderer = (params: RendererParams) => {
         color: new Color("rgba(181, 166, 0, 1)"),
         rotation: 0
       })
-      // symbol: createSymbol(new Color("rgba(181, 166, 0, 1)"))
     }, {
       value: "republican",
       label: "Republican",
@@ -71,7 +69,6 @@ export const countyChangeAllRenderer = (params: RendererParams) => {
         color: new Color("rgba(220, 75, 0, 1)"),
         rotation: -45
       })
-      // symbol: createSymbol(new Color("rgba(220, 75, 0, 1)"))
     }],
     visualVariables: [
       new SizeVariable({
@@ -113,13 +110,12 @@ export const countyChangeAllRenderer = (params: RendererParams) => {
           stops: [
             new SizeStop({ size: 6, value: 288895 }),
             new SizeStop({ size: 4, value: 2311162 }),
-            new SizeStop({ size: 1, value: 18489297 }),
-            new SizeStop({ size: 1, value: 147914381 })
+            new SizeStop({ size: 3, value: 18489297 }),
+            new SizeStop({ size: 2, value: 147914381 })
           ]
         }
       })
     ]
-
   });
 };
 
@@ -167,11 +163,11 @@ export const countyChangePartyRenderer = (params: RendererParams) => {
     classBreakInfos: [{
       minValue: -9007199254740991,
       maxValue: 0,
-      symbol: caretCircleDown //belowSymbol  // belowSymbol //createSymbol(new Color(colors[0]))
+      symbol: caretCircleDown
     }, {
       minValue: 0,
       maxValue: 9007199254740991,
-      symbol: caretCircleUp// aboveSymbol  //aboveSymbol   // createSymbol(new Color(colors[4]))
+      symbol: caretCircleUp
     }],
     visualVariables: [
       new ColorVariable({
@@ -186,11 +182,11 @@ export const countyChangePartyRenderer = (params: RendererParams) => {
         `,
         valueExpressionTitle: `Shift in ${partyLong[party]} votes ${previousYear}-${year}`,
         stops: [
-          { value: -15, color: colors[0], label: labels[0] },
-          { value: -5, color: colors[1] },
-          { value: 0, color: colors[2] },
-          { value: 5, color: colors[3] },
-          { value: 15, color: colors[4], label: labels[1] }
+          { value: -15, color: colors[0], label: `-20% pts` },
+          { value: -7.5, color: colors[1] },
+          { value: 0, color: colors[2], label: `no shift` },
+          { value: 7.5, color: colors[3] },
+          { value: 15, color: colors[4], label: `+20% pts` }
         ]
       }),
       new SizeVariable({
@@ -207,7 +203,7 @@ export const countyChangePartyRenderer = (params: RendererParams) => {
         stops: [
           { value: -40, size: 28 },
           { value: -20, size: 15 },
-          { value: 0, size: 2 },
+          { value: 0, size: 3 },
           { value: 20, size: 15 },
           { value: 40, size: 28 }
         ]
