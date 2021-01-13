@@ -1,8 +1,6 @@
-import esri = __esri;
 import EsriMap = require("esri/Map");
 import MapView = require("esri/views/MapView");
 import FeatureLayer = require("esri/layers/FeatureLayer");
-import cimSymbolUtils = require("esri/symbols/support/cimSymbolUtils");
 
 import { referenceScale, maxScale, basemapPortalItem, countiesLayerPortalItem, years, setSelectedYear, getUrlParams, selectedYear, yearSlider, selectedParty, setSelectedParty } from "./config";
 import { countyChangeAllRenderer, countyChangePartyRenderer, RendererParams } from "./rendererUtils";
@@ -62,10 +60,6 @@ import { Extent } from "esri/geometry";
   });
 
   view.ui.add("infoDiv", "top-right");
-  view.watch( "extent", (extent) => {
-    console.log(view.scale)
-    console.log(JSON.stringify(extent.toJSON()))
-  });
   const commonLayerOptions = {
     outFields: ["*"]
   };
@@ -99,8 +93,6 @@ import { Extent } from "esri/geometry";
       popupTemplate: countyPopupTemplate()
     });
 
-    const renderer = countyChangeLayer.renderer as esri.RendererWithVisualVariables;
-
     createLegend({
       layer: countyChangeLayer,
       view,
@@ -118,22 +110,7 @@ import { Extent } from "esri/geometry";
 
   view.map.add(countyChangeLayer);
 
-  // const totalLegend = document.getElementById(`total-legend`) as HTMLDivElement;
-  // const changeLegend = document.getElementById(`change-legend`) as HTMLDivElement;
-  // const infoToggle = document.getElementById(`info-toggle`) as HTMLDivElement;
-
-  // const endYearChangeSpan = document.getElementById(`end-year-change`) as HTMLSpanElement;
-  // const startYearChangeSpan = document.getElementById(`start-year-change`) as HTMLSpanElement;
-  // const endYearTotalSpan = document.getElementById(`end-year-total`) as HTMLSpanElement;
-
-  // endYearChangeSpan.innerHTML = years.next.toString();
-  // startYearChangeSpan.innerHTML = years.previous.toString();
-  // endYearTotalSpan.innerHTML = years.next.toString();
-
   yearSlider.watch("values", ([ year ]) => {
-    // startYearChangeSpan.innerHTML = (year - 4).toString();
-    // endYearChangeSpan.innerHTML = year.toString();
-    // endYearTotalSpan.innerHTML = year.toString();
     setSelectedYear(year);
     updateLayers({year, party: selectedParty });
   });

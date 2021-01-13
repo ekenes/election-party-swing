@@ -205,6 +205,11 @@ table {
   margin: 0 auto;
 }
 
+#histogramContainer{
+  width: 300px;
+  height: 100px;
+}
+
 #histogram {
   width: 300px;
   height: 100px;

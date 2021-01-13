@@ -5,6 +5,7 @@ import cimSymbolUtils = require("esri/symbols/support/cimSymbolUtils");
 import Histogram = require("esri/widgets/Histogram");
 import histogram = require("esri/smartMapping/statistics/histogram");
 import summaryStatistics = require("esri/smartMapping/statistics/summaryStatistics");
+
 import { results } from "./config";
 import { RendererParams } from "./rendererUtils";
 
@@ -13,7 +14,9 @@ const upperLabel = document.getElementById("right-label") as HTMLDivElement;
 const lowerLabel = document.getElementById("left-label") as HTMLDivElement;
 const centerLabel = document.getElementById("center-label") as HTMLDivElement;
 const legendTitle = document.getElementById("legend-title") as HTMLDivElement;
-const histogramContainer = document.getElementById("histogram") as HTMLDivElement;
+const histogramElement = document.getElementById("histogram") as HTMLDivElement;
+const histogramContainer = document.getElementById("histogramContainer") as HTMLDivElement;
+const legendContainer = document.getElementById("legend") as HTMLDivElement;
 
 // {
 //   2004: {
@@ -186,10 +189,13 @@ async function updateHistogram(params: HistogramParams){
 
     const { avg } = await summaryStatistics(histogramParams);
     const histogramResult = await histogram(histogramParams);
-    histograms[year] = {};
+    if(!histograms[year]){
+      histograms[year] = {};
+    }
     histograms[year][party] = {
       bins: histogramResult.bins,
-      average: avg
+      average: avg,
+      maxCount: getMaxBinCount(histogramResult.bins)
     };
   }
 
@@ -228,9 +234,11 @@ async function updateHistogram(params: HistogramParams){
         element.setAttribute("fill", color.toHex());
       }
     });
+    // (histogramChart.container as HTMLElement).style.height = `${(maxCount / 1200)*100}px`;
   } else {
     histogramChart.bins = bins;
     histogramChart.average = average;
+    // (histogramChart.container as HTMLElement).style.height = `${(maxCount / 1200)*100}px`;
     allBars.forEach( (bar, index) => {
       const bin = histogramChart.bins[index];
       const midValue = (bin.maxValue - bin.minValue) / 2 + bin.minValue;
@@ -289,4 +297,12 @@ function getColorFromValue(params: ValueColorParams) {
     maxStop.color,
     weightedPosition
   );
+}
+
+function getMaxBinCount (bins: Histogram["bins"]){
+  let max = -Infinity;
+  bins.forEach( bin => {
+    max = bin.count > max ? bin.count : max;
+  });
+  return max;
 }

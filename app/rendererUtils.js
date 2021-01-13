@@ -14,7 +14,6 @@ define(["require", "exports", "esri/renderers", "esri/Color", "esri/renderers/vi
                         color: new Color("rgba(60, 108, 204, 1)"),
                         rotation: 45
                     })
-                    // symbol: createSymbol(new Color("rgba(60, 108, 204, 1)"))
                 }, {
                     value: "other",
                     label: "Other",
@@ -22,7 +21,6 @@ define(["require", "exports", "esri/renderers", "esri/Color", "esri/renderers/vi
                         color: new Color("rgba(181, 166, 0, 1)"),
                         rotation: 0
                     })
-                    // symbol: createSymbol(new Color("rgba(181, 166, 0, 1)"))
                 }, {
                     value: "republican",
                     label: "Republican",
@@ -30,7 +28,6 @@ define(["require", "exports", "esri/renderers", "esri/Color", "esri/renderers/vi
                         color: new Color("rgba(220, 75, 0, 1)"),
                         rotation: -45
                     })
-                    // symbol: createSymbol(new Color("rgba(220, 75, 0, 1)"))
                 }],
             visualVariables: [
                 new SizeVariable({
@@ -54,8 +51,8 @@ define(["require", "exports", "esri/renderers", "esri/Color", "esri/renderers/vi
                         stops: [
                             new SizeStop({ size: 6, value: 288895 }),
                             new SizeStop({ size: 4, value: 2311162 }),
-                            new SizeStop({ size: 1, value: 18489297 }),
-                            new SizeStop({ size: 1, value: 147914381 })
+                            new SizeStop({ size: 3, value: 18489297 }),
+                            new SizeStop({ size: 2, value: 147914381 })
                         ]
                     }
                 })
@@ -104,7 +101,7 @@ define(["require", "exports", "esri/renderers", "esri/Color", "esri/renderers/vi
                     stops: [
                         { value: -15, color: colors[0], label: "-20% pts" },
                         { value: -7.5, color: colors[1] },
-                        { value: 0, color: colors[2], label: "No shift" },
+                        { value: 0, color: colors[2], label: "no shift" },
                         { value: 7.5, color: colors[3] },
                         { value: 15, color: colors[4], label: "+20% pts" }
                     ]

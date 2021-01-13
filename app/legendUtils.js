@@ -42,7 +42,9 @@ define(["require", "exports", "esri/Color", "esri/symbols/support/symbolUtils", 
     var lowerLabel = document.getElementById("left-label");
     var centerLabel = document.getElementById("center-label");
     var legendTitle = document.getElementById("legend-title");
-    var histogramContainer = document.getElementById("histogram");
+    var histogramElement = document.getElementById("histogram");
+    var histogramContainer = document.getElementById("histogramContainer");
+    var legendContainer = document.getElementById("legend");
     // {
     //   2004: {
     //     rep: {},
@@ -179,10 +181,13 @@ define(["require", "exports", "esri/Color", "esri/symbols/support/symbolUtils", 
                         return [4 /*yield*/, histogram(histogramParams)];
                     case 5:
                         histogramResult = _b.sent();
-                        histograms[year] = {};
+                        if (!histograms[year]) {
+                            histograms[year] = {};
+                        }
                         histograms[year][party] = {
                             bins: histogramResult.bins,
-                            average: avg
+                            average: avg,
+                            maxCount: getMaxBinCount(histogramResult.bins)
                         };
                         _b.label = 6;
                     case 6:
@@ -219,10 +224,12 @@ define(["require", "exports", "esri/Color", "esri/symbols/support/symbolUtils", 
                                     element.setAttribute("fill", color.toHex());
                                 }
                             });
+                            // (histogramChart.container as HTMLElement).style.height = `${(maxCount / 1200)*100}px`;
                         }
                         else {
                             histogramChart.bins = bins;
                             histogramChart.average = average;
+                            // (histogramChart.container as HTMLElement).style.height = `${(maxCount / 1200)*100}px`;
                             allBars.forEach(function (bar, index) {
                                 var bin = histogramChart.bins[index];
                                 var midValue = (bin.maxValue - bin.minValue) / 2 + bin.minValue;
@@ -265,6 +272,13 @@ define(["require", "exports", "esri/Color", "esri/symbols/support/symbolUtils", 
         });
         var weightedPosition = (value - minStop.value) / (maxStop.value - minStop.value);
         return Color.blendColors(minStop.color, maxStop.color, weightedPosition);
+    }
+    function getMaxBinCount(bins) {
+        var max = -Infinity;
+        bins.forEach(function (bin) {
+            max = bin.count > max ? bin.count : max;
+        });
+        return max;
     }
 });
 //# sourceMappingURL=legendUtils.js.map
