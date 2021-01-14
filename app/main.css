@@ -12,9 +12,6 @@ body,
 }
 #legend-container{
   padding: 10px;
-  position: absolute;
-  left: 10px;
-  bottom: 35px;
   background-color: white;
   width: 320px;
 }

@@ -34,7 +34,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "./config", "./rendererUtils", "./legendUtils", "./popupUtils", "esri/geometry"], function (require, exports, EsriMap, MapView, FeatureLayer, config_1, rendererUtils_1, legendUtils_1, popupUtils_1, geometry_1) {
+define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/widgets/Expand", "./config", "./rendererUtils", "./legendUtils", "./popupUtils", "esri/geometry"], function (require, exports, EsriMap, MapView, FeatureLayer, Expand, config_1, rendererUtils_1, legendUtils_1, popupUtils_1, geometry_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     (function () { return __awaiter(void 0, void 0, void 0, function () {
@@ -105,7 +105,18 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/layers/Fea
                     }
                 }
             });
-            view.ui.add("infoDiv", "top-right");
+            view.ui.add(new Expand({
+                view: view,
+                expanded: true,
+                content: document.getElementById("infoDiv"),
+                expandIconClass: "esri-icon-sliders"
+            }), "top-right");
+            view.ui.add(new Expand({
+                view: view,
+                expanded: !isMobileBrowser(),
+                content: document.getElementById("legend-container"),
+                expandIconClass: "esri-icon-chart"
+            }), "bottom-left");
             commonLayerOptions = {
                 outFields: ["*"]
             };

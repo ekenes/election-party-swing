@@ -1,6 +1,7 @@
 import EsriMap = require("esri/Map");
 import MapView = require("esri/views/MapView");
 import FeatureLayer = require("esri/layers/FeatureLayer");
+import Expand = require("esri/widgets/Expand");
 
 import { referenceScale, maxScale, basemapPortalItem, countiesLayerPortalItem, years, setSelectedYear, getUrlParams, selectedYear, yearSlider, selectedParty, setSelectedParty } from "./config";
 import { countyChangeAllRenderer, countyChangePartyRenderer, RendererParams } from "./rendererUtils";
@@ -59,7 +60,20 @@ import { Extent } from "esri/geometry";
     }
   });
 
-  view.ui.add("infoDiv", "top-right");
+  view.ui.add(new Expand({
+    view,
+    expanded: true,
+    content: document.getElementById("infoDiv"),
+    expandIconClass: "esri-icon-sliders"
+  }), "top-right");
+
+  view.ui.add(new Expand({
+    view,
+    expanded: !isMobileBrowser(),
+    content: document.getElementById("legend-container"),
+    expandIconClass: "esri-icon-chart"
+  }), "bottom-left");
+
   const commonLayerOptions = {
     outFields: ["*"]
   };
