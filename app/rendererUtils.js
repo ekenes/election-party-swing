@@ -99,11 +99,11 @@ define(["require", "exports", "esri/renderers", "esri/Color", "esri/renderers/vi
                     valueExpression: "\n          var all" + year + " = $feature[\"rep_" + year + "\"] + $feature[\"oth_" + year + "\"] + $feature[\"dem_" + year + "\"];\n          var all" + previousYear + " = $feature[\"rep_" + previousYear + "\"] + $feature[\"oth_" + previousYear + "\"] + $feature[\"dem_" + previousYear + "\"];\n\n          var " + party + "Share" + previousYear + " = ($feature[\"" + party + "_" + previousYear + "\"] / all" + previousYear + ") * 100;\n          var " + party + "Share" + year + " = ($feature[\"" + party + "_" + year + "\"] / all" + year + ") * 100;\n\n          return " + party + "Share" + year + " - " + party + "Share" + previousYear + ";\n        ",
                     valueExpressionTitle: "Shift in " + partyLong[party] + " votes " + previousYear + "-" + year,
                     stops: [
-                        { value: -15, color: colors[0], label: "-20% pts" },
-                        { value: -7.5, color: colors[1] },
+                        { value: -16, color: colors[0], label: "-20% pts" },
+                        { value: -8, color: colors[1] },
                         { value: 0, color: colors[2], label: "no shift" },
-                        { value: 7.5, color: colors[3] },
-                        { value: 15, color: colors[4], label: "+20% pts" }
+                        { value: 8, color: colors[3] },
+                        { value: 16, color: colors[4], label: "+20% pts" }
                     ]
                 }),
                 new SizeVariable({

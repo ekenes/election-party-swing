@@ -182,11 +182,11 @@ export const countyChangePartyRenderer = (params: RendererParams) => {
         `,
         valueExpressionTitle: `Shift in ${partyLong[party]} votes ${previousYear}-${year}`,
         stops: [
-          { value: -15, color: colors[0], label: `-20% pts` },
-          { value: -7.5, color: colors[1] },
+          { value: -16, color: colors[0], label: `-20% pts` },
+          { value: -8, color: colors[1] },
           { value: 0, color: colors[2], label: `no shift` },
-          { value: 7.5, color: colors[3] },
-          { value: 15, color: colors[4], label: `+20% pts` }
+          { value: 8, color: colors[3] },
+          { value: 16, color: colors[4], label: `+20% pts` }
         ]
       }),
       new SizeVariable({
