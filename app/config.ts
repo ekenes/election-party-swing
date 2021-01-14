@@ -299,7 +299,7 @@ export const results = {
       electoralVotes: 266
     },
     other: {
-      candidate: "Another candidate",
+      candidate: "Other",
       electoralVotes: 0
     }
   },
@@ -313,7 +313,7 @@ export const results = {
       electoralVotes: 251
     },
     other: {
-      candidate: "Another candidate",
+      candidate: "Other",
       electoralVotes: 0
     }
   },
@@ -327,7 +327,7 @@ export const results = {
       electoralVotes: 365
     },
     other: {
-      candidate: "Another candidate",
+      candidate: "Other",
       electoralVotes: 0
     }
   },
@@ -341,7 +341,7 @@ export const results = {
       electoralVotes: 332
     },
     other: {
-      candidate: "Another candidate",
+      candidate: "Other",
       electoralVotes: 0
     }
   },
@@ -355,7 +355,7 @@ export const results = {
       electoralVotes: 227
     },
     other: {
-      candidate: "Another candidate",
+      candidate: "Other",
       electoralVotes: 0
     }
   },
@@ -369,7 +369,7 @@ export const results = {
       electoralVotes: 306
     },
     other: {
-      candidate: "Another candidate",
+      candidate: "Other",
       electoralVotes: 0
     }
   }
