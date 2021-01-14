@@ -129,6 +129,10 @@ import { Extent } from "esri/geometry";
     updateLayers({year, party: selectedParty });
   });
 
+  if(isMobileBrowser()){
+    view.constraints.minScale *= 1.5;
+  }
+
 })();
 
 function isMobileBrowser() {

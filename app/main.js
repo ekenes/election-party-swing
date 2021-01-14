@@ -141,6 +141,9 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/layers/Fea
                 config_1.setSelectedYear(year);
                 updateLayers({ year: year, party: config_1.selectedParty });
             });
+            if (isMobileBrowser()) {
+                view.constraints.minScale *= 1.5;
+            }
             return [2 /*return*/];
         });
     }); })();
