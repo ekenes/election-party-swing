@@ -1,12 +1,15 @@
+import esri = __esri;
 import EsriMap = require("esri/Map");
 import MapView = require("esri/views/MapView");
 import FeatureLayer = require("esri/layers/FeatureLayer");
 import Expand = require("esri/widgets/Expand");
+import FeatureEffect = require("esri/views/layers/support/FeatureEffect");
+import FeatureFilter = require("esri/views/layers/support/FeatureFilter");
 
-import { referenceScale, maxScale, basemapPortalItem, countiesLayerPortalItem, years, setSelectedYear, getUrlParams, selectedYear, yearSlider, selectedParty, setSelectedParty } from "./config";
-import { countyChangeAllRenderer, countyChangePartyRenderer, RendererParams } from "./rendererUtils";
+import { referenceScale, maxScale, basemapPortalItem, countiesLayerPortalItem, years, setSelectedYear, getUrlParams, selectedYear, yearSlider, selectedParty, setSelectedParty, statesLayerPortalItem, fieldInfos } from "./config";
+import { countyChangeAllRenderer, countyChangePartyRenderer, RendererParams, stateElectoralResultsRenderer } from "./rendererUtils";
 import { createLegend, updateResultsDisplay } from "./legendUtils";
-import { countyPopupTemplate } from "./popupUtils";
+import { countyPopupTemplate, statePopupTemplate } from "./popupUtils";
 import { Extent } from "esri/geometry";
 
 ( async () => {
@@ -79,6 +82,7 @@ import { Extent } from "esri/geometry";
   };
 
   const countyChangeLayer = new FeatureLayer(commonLayerOptions);
+  const stateElectoralResultsLayer = new FeatureLayer(commonLayerOptions);
 
   const btns = Array.from(document.getElementsByTagName("button"));
 
@@ -96,6 +100,16 @@ import { Extent } from "esri/geometry";
   function updateLayers(params: RendererParams){
 
     const { party } = params;
+
+    stateElectoralResultsLayer.set({
+      portalItem: {
+        id: statesLayerPortalItem
+      },
+      title: `Results by state`,
+      opacity: 1,
+      renderer: stateElectoralResultsRenderer(),
+      popupTemplate: statePopupTemplate()
+    });
 
     countyChangeLayer.set({
       portalItem: {
@@ -115,6 +129,44 @@ import { Extent } from "esri/geometry";
     })
 
     updateResultsDisplay(selectedYear);
+    updateSwingStates();
+  }
+
+  async function updateSwingStates(){
+    const stateLayerView = await view.whenLayerView(stateElectoralResultsLayer) as esri.FeatureLayerView;
+
+    const dem_n = fieldInfos.democrat.state.next.name;
+    const dem_p = fieldInfos.democrat.state.previous.name;
+    const rep_n = fieldInfos.republican.state.next.name;
+    const rep_p = fieldInfos.republican.state.previous.name;
+    const oth_n = fieldInfos.other.state.next.name;
+    const oth_p = fieldInfos.other.state.previous.name;
+
+    // where clause indicating states that did not flip;
+    const where = `
+
+      (
+        ((${rep_n} > ${dem_n}) AND (${rep_n} > ${oth_n}) AND (${rep_p} > ${dem_p}) AND (${rep_p} > ${oth_p})) OR
+        ((${dem_n} > ${rep_n}) AND (${dem_n} > ${oth_n}) AND (${dem_p} > ${rep_p}) AND (${dem_p} > ${oth_p})) OR
+        ((${oth_n} > ${dem_n}) AND (${oth_n} > ${rep_n}) AND (${oth_p} > ${dem_p}) AND (${oth_p} > ${rep_p}))
+      )
+    `;
+
+    //  AND (${oth_n} IS NOT NULL AND ${oth_n} != 0) AND (${oth_p} IS NOT NULL AND ${oth_n} != 0))
+
+    console.log(where)
+
+    stateLayerView.effect = new FeatureEffect({
+      filter: new FeatureFilter({
+        where
+      }),
+      includedEffect: "opacity(0.15)",
+      excludedEffect: "hue-rotate(-20deg) saturate(100%) drop-shadow(5px, 5px, 10px, black) opacity(0.6)"
+    });
+
+    countyChangeLayer.blendMode = "multiply";
+
+    // "hue-rotate(-20deg) bloom(0.5, 1px, 20%) drop-shadow(5px, 5px, 10px, black) opacity(0.75)"
   }
 
   let { year, party } = getUrlParams();
@@ -122,6 +174,7 @@ import { Extent } from "esri/geometry";
   setSelectedYear(year || 2020);
   updateLayers({ year: selectedYear, party: selectedParty });
 
+  view.map.add(stateElectoralResultsLayer);
   view.map.add(countyChangeLayer);
 
   yearSlider.watch("values", ([ year ]) => {

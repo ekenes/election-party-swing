@@ -90,3 +90,40 @@ export const shiftCountyTextBase = () => {
     return shiftText + "%";
   `;
 }
+
+export const shiftStates = () => {
+  return `
+    var demNext = $feature.${fieldInfos.democrat.state.next.name};
+    var repNext = $feature.${fieldInfos.republican.state.next.name};
+    var othNext = $feature.${fieldInfos.other.state.next.name};
+    var allNext = Sum([demNext, repNext, othNext]);
+
+    var demPrevious = $feature.${fieldInfos.democrat.state.previous.name};
+    var repPrevious = $feature.${fieldInfos.republican.state.previous.name};
+    var othPrevious = $feature.${fieldInfos.other.state.previous.name};
+    var allPrevious = Sum([demPrevious, repPrevious, othPrevious]);
+
+
+    var percentNext = (votesNext / allNext) * 100;
+    var percentPrevious = (votesPrevious / allPrevious) * 100;
+    var shift = percentNext - percentPrevious;
+  `;
+}
+
+export const shiftStatesTextBase = () => {
+  return `
+    ${shiftStates()}
+
+    var shiftText = IIF(shift > 0, Text(shift, '+#,###.0'), Text(shift, '#,###.0'));
+    return shiftText + "%";
+  `;
+}
+
+export const allStateNextBase = () => {
+  return `
+    var demNext = $feature.${fieldInfos.democrat.state.next.name};
+    var repNext = $feature.${fieldInfos.republican.state.next.name};
+    var othNext = $feature.${fieldInfos.other.state.next.name};
+    var allNext = Sum([demNext, repNext, othNext]);
+  `
+}

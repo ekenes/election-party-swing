@@ -5,7 +5,7 @@ import SizeVariable = require("esri/renderers/visualVariables/SizeVariable");
 import SizeStop = require("esri/renderers/visualVariables/support/SizeStop");
 import cimSymbolUtils = require("esri/symbols/support/cimSymbolUtils");
 import { SimpleFillSymbol } from "esri/symbols";
-import { years, fieldInfos, dColor, rColor, selectedYear } from "./config";
+import { years, fieldInfos, dColor, rColor, selectedYear, results } from "./config";
 import { aboveSymbol, belowSymbol, caretCircleDown, caretCircleUp, caretDown, caretUp, minusSymbol, plusSymbol } from "./symbolUtils";
 
 ////////////////////////////////////////////////////
@@ -211,6 +211,46 @@ export const countyChangePartyRenderer = (params: RendererParams) => {
     ]
 
   });
+};
+
+////////////////////////////////////////////////////
+//
+// STATE ELECTORAL RESULTS
+//
+///////////////////////////////////////////////////
+
+export const stateElectoralResultsRenderer = () => {
+  return new UniqueValueRenderer({
+    valueExpression: `
+      var dem = $feature.${fieldInfos.democrat.state.next.name};
+      var rep = $feature.${fieldInfos.republican.state.next.name};
+      var oth = $feature.${fieldInfos.other.state.next.name};
+
+      var winner = Decode( Max([dem, rep, oth]),
+        dem, 'Democrat',
+        rep, 'Republican',
+        oth, 'Other',
+      'n/a' );
+
+      return winner;
+    `,
+    defaultSymbol: null,
+    uniqueValueInfos: [{
+      value: `Republican`,
+      label: `R - ${results[selectedYear].republican.candidate} (${results[selectedYear].republican.electoralVotes})`,
+      symbol: new SimpleFillSymbol({
+        color: rColor,
+        outline: null
+      })
+    }, {
+      value: `Democrat`,
+      label: `D - ${results[selectedYear].democrat.candidate} (${results[selectedYear].democrat.electoralVotes})`,
+      symbol: new SimpleFillSymbol({
+        color: dColor,
+        outline: null
+      })
+    }]
+  })
 };
 
 function createSymbol(color: Color){

@@ -1,4 +1,4 @@
-define(["require", "exports", "esri/renderers", "esri/Color", "esri/renderers/visualVariables/ColorVariable", "esri/renderers/visualVariables/SizeVariable", "esri/renderers/visualVariables/support/SizeStop", "esri/symbols/support/cimSymbolUtils", "./symbolUtils"], function (require, exports, renderers_1, Color, ColorVariable, SizeVariable, SizeStop, cimSymbolUtils, symbolUtils_1) {
+define(["require", "exports", "esri/renderers", "esri/Color", "esri/renderers/visualVariables/ColorVariable", "esri/renderers/visualVariables/SizeVariable", "esri/renderers/visualVariables/support/SizeStop", "esri/symbols/support/cimSymbolUtils", "esri/symbols", "./config", "./symbolUtils"], function (require, exports, renderers_1, Color, ColorVariable, SizeVariable, SizeStop, cimSymbolUtils, symbols_1, config_1, symbolUtils_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.countyChangeAllRenderer = function (params) {
@@ -118,6 +118,32 @@ define(["require", "exports", "esri/renderers", "esri/Color", "esri/renderers/vi
                     ]
                 })
             ]
+        });
+    };
+    ////////////////////////////////////////////////////
+    //
+    // STATE ELECTORAL RESULTS
+    //
+    ///////////////////////////////////////////////////
+    exports.stateElectoralResultsRenderer = function () {
+        return new renderers_1.UniqueValueRenderer({
+            valueExpression: "\n      var dem = $feature." + config_1.fieldInfos.democrat.state.next.name + ";\n      var rep = $feature." + config_1.fieldInfos.republican.state.next.name + ";\n      var oth = $feature." + config_1.fieldInfos.other.state.next.name + ";\n\n      var winner = Decode( Max([dem, rep, oth]),\n        dem, 'Democrat',\n        rep, 'Republican',\n        oth, 'Other',\n      'n/a' );\n\n      return winner;\n    ",
+            defaultSymbol: null,
+            uniqueValueInfos: [{
+                    value: "Republican",
+                    label: "R - " + config_1.results[config_1.selectedYear].republican.candidate + " (" + config_1.results[config_1.selectedYear].republican.electoralVotes + ")",
+                    symbol: new symbols_1.SimpleFillSymbol({
+                        color: config_1.rColor,
+                        outline: null
+                    })
+                }, {
+                    value: "Democrat",
+                    label: "D - " + config_1.results[config_1.selectedYear].democrat.candidate + " (" + config_1.results[config_1.selectedYear].democrat.electoralVotes + ")",
+                    symbol: new symbols_1.SimpleFillSymbol({
+                        color: config_1.dColor,
+                        outline: null
+                    })
+                }]
         });
     };
     function createSymbol(color) {

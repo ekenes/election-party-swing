@@ -34,12 +34,21 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/widgets/Expand", "./config", "./rendererUtils", "./legendUtils", "./popupUtils", "esri/geometry"], function (require, exports, EsriMap, MapView, FeatureLayer, Expand, config_1, rendererUtils_1, legendUtils_1, popupUtils_1, geometry_1) {
+define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/widgets/Expand", "esri/views/layers/support/FeatureEffect", "esri/views/layers/support/FeatureFilter", "./config", "./rendererUtils", "./legendUtils", "./popupUtils", "esri/geometry"], function (require, exports, EsriMap, MapView, FeatureLayer, Expand, FeatureEffect, FeatureFilter, config_1, rendererUtils_1, legendUtils_1, popupUtils_1, geometry_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     (function () { return __awaiter(void 0, void 0, void 0, function () {
         function updateLayers(params) {
             var party = params.party;
+            stateElectoralResultsLayer.set({
+                portalItem: {
+                    id: config_1.statesLayerPortalItem
+                },
+                title: "Results by state",
+                opacity: 1,
+                renderer: rendererUtils_1.stateElectoralResultsRenderer(),
+                popupTemplate: popupUtils_1.statePopupTemplate()
+            });
             countyChangeLayer.set({
                 portalItem: {
                     id: config_1.countiesLayerPortalItem
@@ -56,8 +65,39 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/layers/Fea
                 party: config_1.selectedParty
             });
             legendUtils_1.updateResultsDisplay(config_1.selectedYear);
+            updateSwingStates();
         }
-        var map, initialExtent, view, commonLayerOptions, countyChangeLayer, btns, _a, year, party;
+        function updateSwingStates() {
+            return __awaiter(this, void 0, void 0, function () {
+                var stateLayerView, dem_n, dem_p, rep_n, rep_p, oth_n, oth_p, where;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, view.whenLayerView(stateElectoralResultsLayer)];
+                        case 1:
+                            stateLayerView = _a.sent();
+                            dem_n = config_1.fieldInfos.democrat.state.next.name;
+                            dem_p = config_1.fieldInfos.democrat.state.previous.name;
+                            rep_n = config_1.fieldInfos.republican.state.next.name;
+                            rep_p = config_1.fieldInfos.republican.state.previous.name;
+                            oth_n = config_1.fieldInfos.other.state.next.name;
+                            oth_p = config_1.fieldInfos.other.state.previous.name;
+                            where = "\n\n      (\n        ((" + rep_n + " > " + dem_n + ") AND (" + rep_n + " > " + oth_n + ") AND (" + rep_p + " > " + dem_p + ") AND (" + rep_p + " > " + oth_p + ")) OR\n        ((" + dem_n + " > " + rep_n + ") AND (" + dem_n + " > " + oth_n + ") AND (" + dem_p + " > " + rep_p + ") AND (" + dem_p + " > " + oth_p + ")) OR\n        ((" + oth_n + " > " + dem_n + ") AND (" + oth_n + " > " + rep_n + ") AND (" + oth_p + " > " + dem_p + ") AND (" + oth_p + " > " + rep_p + "))\n      )\n    ";
+                            //  AND (${oth_n} IS NOT NULL AND ${oth_n} != 0) AND (${oth_p} IS NOT NULL AND ${oth_n} != 0))
+                            console.log(where);
+                            stateLayerView.effect = new FeatureEffect({
+                                filter: new FeatureFilter({
+                                    where: where
+                                }),
+                                includedEffect: "opacity(0.15)",
+                                excludedEffect: "hue-rotate(-20deg) saturate(100%) drop-shadow(5px, 5px, 10px, black) opacity(0.6)"
+                            });
+                            countyChangeLayer.blendMode = "multiply";
+                            return [2 /*return*/];
+                    }
+                });
+            });
+        }
+        var map, initialExtent, view, commonLayerOptions, countyChangeLayer, stateElectoralResultsLayer, btns, _a, year, party;
         return __generator(this, function (_b) {
             map = new EsriMap({
                 basemap: {
@@ -121,6 +161,7 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/layers/Fea
                 outFields: ["*"]
             };
             countyChangeLayer = new FeatureLayer(commonLayerOptions);
+            stateElectoralResultsLayer = new FeatureLayer(commonLayerOptions);
             btns = Array.from(document.getElementsByTagName("button"));
             btns.forEach(function (btn) {
                 btn.addEventListener("click", function () {
@@ -135,6 +176,7 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/layers/Fea
             config_1.setSelectedParty(party || "all");
             config_1.setSelectedYear(year || 2020);
             updateLayers({ year: config_1.selectedYear, party: config_1.selectedParty });
+            view.map.add(stateElectoralResultsLayer);
             view.map.add(countyChangeLayer);
             config_1.yearSlider.watch("values", function (_a) {
                 var year = _a[0];

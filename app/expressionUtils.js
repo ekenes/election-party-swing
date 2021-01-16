@@ -24,5 +24,14 @@ define(["require", "exports", "./config"], function (require, exports, config_1)
     exports.shiftCountyTextBase = function () {
         return "\n    " + exports.shiftCounties() + "\n\n    var shiftText = IIF(shift > 0, Text(shift, '+#,###.0'), Text(shift, '#,###.0'));\n    return shiftText + \"%\";\n  ";
     };
+    exports.shiftStates = function () {
+        return "\n    var demNext = $feature." + config_1.fieldInfos.democrat.state.next.name + ";\n    var repNext = $feature." + config_1.fieldInfos.republican.state.next.name + ";\n    var othNext = $feature." + config_1.fieldInfos.other.state.next.name + ";\n    var allNext = Sum([demNext, repNext, othNext]);\n\n    var demPrevious = $feature." + config_1.fieldInfos.democrat.state.previous.name + ";\n    var repPrevious = $feature." + config_1.fieldInfos.republican.state.previous.name + ";\n    var othPrevious = $feature." + config_1.fieldInfos.other.state.previous.name + ";\n    var allPrevious = Sum([demPrevious, repPrevious, othPrevious]);\n\n\n    var percentNext = (votesNext / allNext) * 100;\n    var percentPrevious = (votesPrevious / allPrevious) * 100;\n    var shift = percentNext - percentPrevious;\n  ";
+    };
+    exports.shiftStatesTextBase = function () {
+        return "\n    " + exports.shiftStates() + "\n\n    var shiftText = IIF(shift > 0, Text(shift, '+#,###.0'), Text(shift, '#,###.0'));\n    return shiftText + \"%\";\n  ";
+    };
+    exports.allStateNextBase = function () {
+        return "\n    var demNext = $feature." + config_1.fieldInfos.democrat.state.next.name + ";\n    var repNext = $feature." + config_1.fieldInfos.republican.state.next.name + ";\n    var othNext = $feature." + config_1.fieldInfos.other.state.next.name + ";\n    var allNext = Sum([demNext, repNext, othNext]);\n  ";
+    };
 });
 //# sourceMappingURL=expressionUtils.js.map
