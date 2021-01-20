@@ -300,7 +300,8 @@ define(["require", "exports", "esri/Color", "esri/widgets/Slider"], function (re
             other: {
                 candidate: "Other",
                 electoralVotes: 0
-            }
+            },
+            swingstates: ["New Hampshire", "Iowa", "New Mexico", "Florida"]
         },
         2008: {
             republican: {
@@ -314,7 +315,8 @@ define(["require", "exports", "esri/Color", "esri/widgets/Slider"], function (re
             other: {
                 candidate: "Other",
                 electoralVotes: 0
-            }
+            },
+            swingstates: ["Nevada", "Iowa", "New Mexico", "Colorado", "Indiana", "Ohio", "Virginia", "North Carolina", "Florida"]
         },
         2012: {
             republican: {
@@ -328,7 +330,8 @@ define(["require", "exports", "esri/Color", "esri/widgets/Slider"], function (re
             other: {
                 candidate: "Other",
                 electoralVotes: 0
-            }
+            },
+            swingstates: ["Indiana", "North Carolina"]
         },
         2016: {
             republican: {
@@ -342,7 +345,8 @@ define(["require", "exports", "esri/Color", "esri/widgets/Slider"], function (re
             other: {
                 candidate: "Other",
                 electoralVotes: 0
-            }
+            },
+            swingstates: ["Iowa", "Wisconsin", "Michigan", "Ohio", "Pennsylvania", "Florida"]
         },
         2020: {
             republican: {
@@ -356,7 +360,8 @@ define(["require", "exports", "esri/Color", "esri/widgets/Slider"], function (re
             other: {
                 candidate: "Other",
                 electoralVotes: 0
-            }
+            },
+            swingstates: ["Arizona", "Wisconsin", "Michigan", "Pennsylvania", "Georgia"]
         }
     };
 });

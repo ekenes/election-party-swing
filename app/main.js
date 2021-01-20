@@ -69,12 +69,15 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/layers/Fea
         }
         function updateSwingStates() {
             return __awaiter(this, void 0, void 0, function () {
-                var stateLayerView, dem_n, dem_p, rep_n, rep_p, oth_n, oth_p, where;
+                var stateLayerView, countyLayerView, dem_n, dem_p, rep_n, rep_p, oth_n, oth_p, where;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
                         case 0: return [4 /*yield*/, view.whenLayerView(stateElectoralResultsLayer)];
                         case 1:
                             stateLayerView = _a.sent();
+                            return [4 /*yield*/, view.whenLayerView(countyChangeLayer)];
+                        case 2:
+                            countyLayerView = _a.sent();
                             dem_n = config_1.fieldInfos.democrat.state.next.name;
                             dem_p = config_1.fieldInfos.democrat.state.previous.name;
                             rep_n = config_1.fieldInfos.republican.state.next.name;
@@ -83,15 +86,22 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/layers/Fea
                             oth_p = config_1.fieldInfos.other.state.previous.name;
                             where = "\n\n      (\n        ((" + rep_n + " > " + dem_n + ") AND (" + rep_n + " > " + oth_n + ") AND (" + rep_p + " > " + dem_p + ") AND (" + rep_p + " > " + oth_p + ")) OR\n        ((" + dem_n + " > " + rep_n + ") AND (" + dem_n + " > " + oth_n + ") AND (" + dem_p + " > " + rep_p + ") AND (" + dem_p + " > " + oth_p + ")) OR\n        ((" + oth_n + " > " + dem_n + ") AND (" + oth_n + " > " + rep_n + ") AND (" + oth_p + " > " + dem_p + ") AND (" + oth_p + " > " + rep_p + "))\n      )\n    ";
                             //  AND (${oth_n} IS NOT NULL AND ${oth_n} != 0) AND (${oth_p} IS NOT NULL AND ${oth_n} != 0))
-                            console.log(where);
                             stateLayerView.effect = new FeatureEffect({
                                 filter: new FeatureFilter({
                                     where: where
                                 }),
                                 includedEffect: "opacity(0.15)",
-                                excludedEffect: "hue-rotate(-20deg) saturate(100%) drop-shadow(5px, 5px, 10px, black) opacity(0.6)"
+                                excludedEffect: "hue-rotate(-20deg) saturate(200%) drop-shadow(5px, 5px, 10px, black) opacity(0.4)"
                             });
                             countyChangeLayer.blendMode = "multiply";
+                            // "hue-rotate(-20deg) bloom(0.5, 1px, 20%) drop-shadow(5px, 5px, 10px, black) opacity(0.75)"
+                            countyLayerView.effect = new FeatureEffect({
+                                filter: new FeatureFilter({
+                                    where: "state IN (" + config_1.results[config_1.selectedYear].swingstates.map(function (s) { return "'" + s + "'"; }).toString() + ")"
+                                }),
+                                excludedEffect: "opacity(0.6)",
+                                includedEffect: "saturate(100%)" // drop-shadow(1px, 1px, 2px, gray)"
+                            });
                             return [2 /*return*/];
                     }
                 });

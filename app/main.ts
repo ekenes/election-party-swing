@@ -6,7 +6,7 @@ import Expand = require("esri/widgets/Expand");
 import FeatureEffect = require("esri/views/layers/support/FeatureEffect");
 import FeatureFilter = require("esri/views/layers/support/FeatureFilter");
 
-import { referenceScale, maxScale, basemapPortalItem, countiesLayerPortalItem, years, setSelectedYear, getUrlParams, selectedYear, yearSlider, selectedParty, setSelectedParty, statesLayerPortalItem, fieldInfos } from "./config";
+import { referenceScale, maxScale, basemapPortalItem, countiesLayerPortalItem, years, setSelectedYear, getUrlParams, selectedYear, yearSlider, selectedParty, setSelectedParty, statesLayerPortalItem, fieldInfos, results } from "./config";
 import { countyChangeAllRenderer, countyChangePartyRenderer, RendererParams, stateElectoralResultsRenderer } from "./rendererUtils";
 import { createLegend, updateResultsDisplay } from "./legendUtils";
 import { countyPopupTemplate, statePopupTemplate } from "./popupUtils";
@@ -134,6 +134,7 @@ import { Extent } from "esri/geometry";
 
   async function updateSwingStates(){
     const stateLayerView = await view.whenLayerView(stateElectoralResultsLayer) as esri.FeatureLayerView;
+    const countyLayerView = await view.whenLayerView(countyChangeLayer) as esri.FeatureLayerView;
 
     const dem_n = fieldInfos.democrat.state.next.name;
     const dem_p = fieldInfos.democrat.state.previous.name;
@@ -154,19 +155,25 @@ import { Extent } from "esri/geometry";
 
     //  AND (${oth_n} IS NOT NULL AND ${oth_n} != 0) AND (${oth_p} IS NOT NULL AND ${oth_n} != 0))
 
-    console.log(where)
-
     stateLayerView.effect = new FeatureEffect({
       filter: new FeatureFilter({
         where
       }),
       includedEffect: "opacity(0.15)",
-      excludedEffect: "hue-rotate(-20deg) saturate(100%) drop-shadow(5px, 5px, 10px, black) opacity(0.6)"
+      excludedEffect: "hue-rotate(-20deg) saturate(200%) drop-shadow(5px, 5px, 10px, black) opacity(0.4)"
     });
 
     countyChangeLayer.blendMode = "multiply";
 
     // "hue-rotate(-20deg) bloom(0.5, 1px, 20%) drop-shadow(5px, 5px, 10px, black) opacity(0.75)"
+
+    countyLayerView.effect = new FeatureEffect({
+      filter: new FeatureFilter({
+        where: "state IN (" + results[selectedYear].swingstates.map((s:any) => `'${s}'`).toString() + ")"
+      }),
+      excludedEffect: "opacity(0.6)",
+      includedEffect: "saturate(100%)"// drop-shadow(1px, 1px, 2px, gray)"
+    })
   }
 
   let { year, party } = getUrlParams();
